@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:background="@drawable/card_bg"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_time"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:lines="2"
+            android:minLines="2"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:text="2:45 pm" />
+
+        <ImageView
+            android:id="@+id/imv_hourly_icon_in_rv"
+            android:layout_width="70dp"
+            android:layout_height="94dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/clear_sky" />
+
+        <TextView
+            android:id="@+id/tv_degree_in_rv_item"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="29\u2103" />
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
