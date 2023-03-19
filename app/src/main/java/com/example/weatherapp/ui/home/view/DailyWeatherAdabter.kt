@@ -9,30 +9,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
+import com.example.weatherapp.databinding.DaysItemBinding
 import com.example.weatherapp.model.DailyWeatherModel
 import com.example.weatherapp.model.HourlyWeatherModel
 
 
 class DailyWeatherAdabter() :
     ListAdapter<DailyWeatherModel, DailyWeatherAdabter.ViewHolder>( DailyDiffUtil()) {
-
-    class ViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val day: TextView
-            get() = itemView.findViewById(R.id.daily_item_day)
-        val unit: TextView
-            get() = itemView.findViewById(R.id.daily_item_unit)
-        val icon : ImageView
-            get() =itemView.findViewById(R.id.img_daily_item_icon)
-        val temp:TextView
-            get() = itemView.findViewById(R.id.tv_daily_item_temp)
-        val des :TextView
-            get() = itemView.findViewById(R.id.tv_daily_item_description)
-
+    
+    class ViewHolder(private val binding: DaysItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val day: TextView = binding.dailyItemDay
+        val unit: TextView = binding.dailyItemUnit
+        val icon: ImageView = binding.imgDailyItemIcon
+        val temp: TextView = binding.tvDailyItemTemp
+        val des: TextView = binding.tvDailyItemDescription
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.days_item, parent, false))
+        val binding = DaysItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
