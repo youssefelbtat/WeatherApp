@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/homeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tv_city,tv_date,cardView,rv_hourly_weather,cardView2,rv_daily_weather" />
+
         <TextView
             android:id="@+id/tv_city"
             android:layout_width="wrap_content"
@@ -20,7 +26,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="London"
             android:textColor="@color/white"
-            android:textSize="52sp"
+            android:textSize="48sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,38 +67,42 @@
                     android:layout_width="194dp"
                     android:layout_height="195dp"
                     android:layout_marginTop="56dp"
+                    android:layout_marginBottom="20dp"
                     android:src="@drawable/thunderstorm"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="160dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="98dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="100dp"
                     android:layout_marginBottom="8dp"
+                    android:gravity="center"
                     android:text="Thunder storm"
                     android:textColor="@color/light_blue"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/imv_mainicon"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_degree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="44dp"
-                    android:text="29\u2103"
+                    android:layout_marginEnd="5dp"
+                    android:text="29.1\u2103"
                     android:textColor="@color/white"
                     android:textSize="52sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/textView7"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imv_mainicon"
-                    app:layout_constraintTop_toTopOf="@+id/imv_mainicon"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -106,7 +116,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/tv_fdegree"
                     app:layout_constraintEnd_toEndOf="@+id/tv_degree"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_bias="0.656"
                     app:layout_constraintStart_toStartOf="@+id/tv_degree" />
 
                 <TextView
@@ -114,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:text="31\u2103"
+                    android:text="31.1\u2103"
                     android:textColor="@color/white"
                     android:textSize="26sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -381,13 +391,26 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_daily_weather"
-            android:padding="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+        <ProgressBar
+            android:id="@+id/homeProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

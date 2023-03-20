@@ -1,8 +1,7 @@
 package com.example.weatherapp.model
 
-import com.example.weatherapp.Constants
+import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.R
-import java.io.FileDescriptor
 
 data class HourlyWeatherModel(val time:String,val degree:String,val icon:Int)
 data class DailyWeatherModel(val day:String,val description:String,val icon:Int,val temp:String,val unit:String)
@@ -18,13 +17,16 @@ object getDamyList{
         HourlyWeatherModel("8:00 pm","26\u2103", R.drawable.scattered_clouds),
     )
     var dailyWeatherList = mutableListOf<DailyWeatherModel>(
-        DailyWeatherModel("Sunday","Clear sky",R.drawable.clear_sky,"26.20/20.5",Constants.Celsius),
-        DailyWeatherModel("Saturday","Broken clouds",R.drawable.broken_cloud,"26.20/20.5",Constants.Celsius),
-        DailyWeatherModel("Monday","Snow",R.drawable.snow,"26.20/20.5",Constants.Celsius),
-        DailyWeatherModel("Tuesday","few clouds",R.drawable.few_clouds,"26.20/20.5",Constants.Celsius),
-        DailyWeatherModel("Wednesday","scattered clouds",R.drawable.scattered_clouds,"26.20/20.5",Constants.Celsius),
-        DailyWeatherModel("Thursday","Thunder Storm",R.drawable.thunderstorm,"26.20/20.5",Constants.Celsius),
-        DailyWeatherModel("Friday","Mist",R.drawable.mist,"26.20/20.5",Constants.Celsius),
+        DailyWeatherModel("Sunday","Clear sky",R.drawable.clear_sky,"26.20/20.5", Constants.Celsius),
+        DailyWeatherModel("Saturday","Broken clouds",R.drawable.broken_cloud,"26.20/20.5",
+            Constants.Celsius),
+        DailyWeatherModel("Monday","Snow",R.drawable.snow,"26.20/20.5", Constants.Celsius),
+        DailyWeatherModel("Tuesday","few clouds",R.drawable.few_clouds,"26.20/20.5", Constants.Celsius),
+        DailyWeatherModel("Wednesday","scattered clouds",R.drawable.scattered_clouds,"26.20/20.5",
+            Constants.Celsius),
+        DailyWeatherModel("Thursday","Thunder Storm",R.drawable.thunderstorm,"26.20/20.5",
+            Constants.Celsius),
+        DailyWeatherModel("Friday","Mist",R.drawable.mist,"26.20/20.5", Constants.Celsius),
     )
 
 

@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.databinding.HourlyItemsBinding
+import com.example.weatherapp.helper.Constants
+import com.example.weatherapp.helper.Convertor
+import com.example.weatherapp.model.Hourly
 import com.example.weatherapp.model.HourlyWeatherModel
 
 class HourlyWeatherAdabter(
 
 ) :
-    ListAdapter<HourlyWeatherModel, HourlyWeatherAdabter.ViewHolder>( HourlyDiffUtil()) {
+    ListAdapter<Hourly, HourlyWeatherAdabter.ViewHolder>( HourlyDiffUtil()) {
 
     class ViewHolder( binding: HourlyItemsBinding) : RecyclerView.ViewHolder(binding.root) {
         val time: TextView = binding.tvTime
@@ -28,19 +31,19 @@ class HourlyWeatherAdabter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.time.text = getItem(position).time
-        holder.degree.text = getItem(position).degree
-        holder.icon.setImageResource(getItem(position).icon)
+        holder.time.text = Convertor.convertDtToTime(getItem(position).dt)
+        holder.degree.text = "${getItem(position).temp?.toInt()}${Constants.Celsius}"
+        holder.icon.setImageResource(Convertor.convertIconToDrawableImage(getItem(position).weather[0].icon))
 
     }
 }
 
-class HourlyDiffUtil : DiffUtil.ItemCallback<HourlyWeatherModel>() {
-    override fun areItemsTheSame(oldItem: HourlyWeatherModel, newItem: HourlyWeatherModel): Boolean {
+class HourlyDiffUtil : DiffUtil.ItemCallback<Hourly>() {
+    override fun areItemsTheSame(oldItem: Hourly, newItem: Hourly): Boolean {
         return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: HourlyWeatherModel, newItem: HourlyWeatherModel): Boolean {
+    override fun areContentsTheSame(oldItem: Hourly, newItem: Hourly): Boolean {
         return oldItem == newItem
     }
 

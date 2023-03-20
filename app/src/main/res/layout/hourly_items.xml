@@ -11,19 +11,20 @@
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/tv_time"
-            android:textSize="22sp"
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:lines="2"
-            android:minLines="2"
             android:maxLines="2"
+            android:minLines="2"
+            android:text="2:45 pm"
             android:textColor="@color/white"
-            android:text="2:45 pm" />
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imv_hourly_icon_in_rv"

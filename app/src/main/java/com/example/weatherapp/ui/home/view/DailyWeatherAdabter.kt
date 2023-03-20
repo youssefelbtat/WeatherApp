@@ -1,21 +1,20 @@
 package com.example.weatherapp.ui.home.view
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherapp.R
+import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.databinding.DaysItemBinding
-import com.example.weatherapp.model.DailyWeatherModel
-import com.example.weatherapp.model.HourlyWeatherModel
+import com.example.weatherapp.helper.Convertor
+import com.example.weatherapp.model.Daily
 
 
 class DailyWeatherAdabter() :
-    ListAdapter<DailyWeatherModel, DailyWeatherAdabter.ViewHolder>( DailyDiffUtil()) {
+    ListAdapter<Daily, DailyWeatherAdabter.ViewHolder>( DailyDiffUtil()) {
     
     class ViewHolder(private val binding: DaysItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val day: TextView = binding.dailyItemDay
@@ -31,21 +30,21 @@ class DailyWeatherAdabter() :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.day.text = getItem(position).day
-        holder.des.text = getItem(position).description
-        holder.icon.setImageResource(getItem(position).icon)
-        holder.unit.text =getItem(position).unit
-        holder.temp.text =getItem(position).temp
+        holder.day.text = Convertor.convertDtToDay(getItem(position).dt)
+        holder.des.text = getItem(position).weather[0].description
+        holder.icon.setImageResource(Convertor.convertIconToDrawableImage(getItem(position).weather[0].icon))
+        holder.unit.text = Constants.Celsius
+        holder.temp.text ="${getItem(position).temp?.max} / ${getItem(position).temp?.min}"
 
     }
 }
 
-class DailyDiffUtil : DiffUtil.ItemCallback<DailyWeatherModel>() {
-    override fun areItemsTheSame(oldItem: DailyWeatherModel, newItem: DailyWeatherModel): Boolean {
+class DailyDiffUtil : DiffUtil.ItemCallback<Daily>() {
+    override fun areItemsTheSame(oldItem: Daily, newItem: Daily): Boolean {
         return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: DailyWeatherModel, newItem: DailyWeatherModel): Boolean {
+    override fun areContentsTheSame(oldItem: Daily, newItem: Daily): Boolean {
         return oldItem == newItem
     }
 
