@@ -1,59 +1,57 @@
-package com.example.weatherapp.ui.home.view
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherapp.R
+import com.example.weatherapp.databinding.FragmentHomeBinding
 import com.example.weatherapp.model.getDamyList
+import com.example.weatherapp.ui.home.view.DailyWeatherAdabter
+import com.example.weatherapp.ui.home.view.HourlyWeatherAdabter
 
 class HomeFragment : Fragment() {
 
-    private lateinit var hourlyRecyclerView: RecyclerView
-    private lateinit var hourlyRecyclerAdapter: HourlyWeatherAdabter
-    private lateinit var dailyRecyclerView: RecyclerView
-    private lateinit var dailyRecyclerAdapter: DailyWeatherAdabter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var binding: FragmentHomeBinding
 
-    }
+    private lateinit var hourlyRecyclerAdapter: HourlyWeatherAdabter
+    private lateinit var dailyRecyclerAdapter: DailyWeatherAdabter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init(view)
-        hourlyRecyclerView.apply {
-            adapter=hourlyRecyclerAdapter.apply {
+        init()
+        setUpRecyclerViews()
+
+    }
+
+    private fun init() {
+        hourlyRecyclerAdapter = HourlyWeatherAdabter()
+        dailyRecyclerAdapter = DailyWeatherAdabter()
+    }
+
+    private fun setUpRecyclerViews() {
+        binding.rvHourlyWeather.apply {
+            adapter = hourlyRecyclerAdapter.apply {
                 submitList(getDamyList.mutableList)
             }
             setHasFixedSize(false)
-            layoutManager= LinearLayoutManager(context).apply {
-                orientation=RecyclerView.HORIZONTAL
-            }
+            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         }
-        dailyRecyclerView.apply {
-            adapter=dailyRecyclerAdapter.apply {
+        binding.rvDailyWeather.apply {
+            adapter = dailyRecyclerAdapter.apply {
                 submitList(getDamyList.dailyWeatherList)
             }
             setHasFixedSize(false)
-            layoutManager= LinearLayoutManager(context).apply {
-                orientation=RecyclerView.VERTICAL
-            }
+            layoutManager = LinearLayoutManager(context)
         }
-    }
-    fun init(view:View){
-        hourlyRecyclerView=view.findViewById(R.id.rv_hourly_weather)
-        hourlyRecyclerAdapter = HourlyWeatherAdabter()
-        dailyRecyclerView=view.findViewById(R.id.rv_daily_weather)
-        dailyRecyclerAdapter= DailyWeatherAdabter()
     }
 }

@@ -212,7 +212,7 @@
                             android:layout_width="60dp"
                             android:layout_height="65dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/wind_speed_icon" />
+                            android:src="@drawable/humidity" />
 
                         <TextView
                             android:id="@+id/humidity"
@@ -245,7 +245,7 @@
                             android:layout_width="60dp"
                             android:layout_height="65dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/wind_speed_icon" />
+                            android:src="@drawable/pressure" />
 
                         <TextView
                             android:id="@+id/tv_pressure"
@@ -285,7 +285,7 @@
                             android:layout_width="60dp"
                             android:layout_height="65dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/wind_speed_icon" />
+                            android:src="@drawable/visibility" />
 
                         <TextView
                             android:id="@+id/tv_visibility"
@@ -353,7 +353,7 @@
                             android:layout_width="60dp"
                             android:layout_height="65dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/wind_speed_icon" />
+                            android:src="@drawable/ultra_violet" />
 
                         <TextView
                             android:id="@+id/tv_ultra"
