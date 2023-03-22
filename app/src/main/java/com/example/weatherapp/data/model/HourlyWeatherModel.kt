@@ -1,4 +1,4 @@
-package com.example.weatherapp.model
+package com.example.weatherapp.data.model
 
 import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.R

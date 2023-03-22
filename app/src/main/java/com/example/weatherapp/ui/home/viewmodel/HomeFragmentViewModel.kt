@@ -3,39 +3,72 @@ package com.example.weatherapp.ui.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.helper.Constants.APP_ID
-import com.example.weatherapp.model.RepositoryInterface
-import com.example.weatherapp.network.APIState
+import com.example.weatherapp.data.model.LastWeather
+import com.example.weatherapp.data.model.RootWeatherModel
+import com.example.weatherapp.data.repo.RepositoryInterface
+import com.example.weatherapp.data.source.network.APIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class HomeFragmentViewModel(
     private val _irepo: RepositoryInterface
 ) : ViewModel() {
     private var _apiState = MutableStateFlow<APIState>(APIState.Loading)
-    var apiState : StateFlow<APIState> = _apiState
+    var apiState: StateFlow<APIState> = _apiState
 
     init {
         getCurrentWeather()
     }
-    private fun getCurrentWeather() = viewModelScope.launch{
-        _irepo.getRootWeather(31.5555379,31.075331,APP_ID,"metric","en").catch {e->
-            _apiState.value =APIState.Failure(e)
-        }.collect(){
-            _apiState.value=APIState.Success(it)
+
+    private fun getCurrentWeather() = viewModelScope.launch {
+        try {
+            _irepo.getRootWeatherFromAPI(31.5555379, 31.075331, units = "metric", lang = "en")
+                .collect() {
+                    _apiState.value = APIState.Success(it)
+                    _irepo.updateLastWeather(
+                        LastWeather(
+                            lat = it.lat,
+                            lon = it.lon,
+                            timezone = it.timezone,
+                            current = it.current,
+                            daily = it.daily,
+                            hourly = it.hourly,
+                            timezoneOffset = it.timezoneOffset
+                        )
+                    )
+
+                }
+        } catch (e: Exception) {
+            val lastWeather = _irepo.getLastWeather().firstOrNull()
+            if (lastWeather != null) {
+                _apiState.value = APIState.Loading
+                _apiState.value = APIState.Success(RootWeatherModel(
+                    lat = lastWeather.lat,
+                    lon = lastWeather.lon,
+                    timezone = lastWeather.timezone,
+                    current = lastWeather.current,
+                    daily = lastWeather.daily,
+                    hourly = lastWeather.hourly,
+                    timezoneOffset = lastWeather.timezoneOffset
+                ))
+            } else {
+                _apiState.value = APIState.Failure(e)
+            }
+
         }
 
     }
 
 }
 
-class HomeViewModelFactory (private val _irepo: RepositoryInterface): ViewModelProvider.Factory {
+class HomeViewModelFactory(private val _irepo: RepositoryInterface) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if(modelClass.isAssignableFrom(HomeFragmentViewModel::class.java)){
+        return if (modelClass.isAssignableFrom(HomeFragmentViewModel::class.java)) {
             HomeFragmentViewModel(_irepo) as T
-        }else{
+        } else {
             throw IllegalArgumentException("ViewModel class not found")
         }
     }

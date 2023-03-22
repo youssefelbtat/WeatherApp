@@ -1,10 +1,14 @@
-package com.example.weatherapp.model
+package com.example.weatherapp.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 
+@Entity(tableName = "favorites_table")
 data class RootWeatherModel(
-
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     @SerializedName("lat") var lat: Double? = null,
     @SerializedName("lon") var lon: Double? = null,
     @SerializedName("timezone") var timezone: String? = null,
@@ -12,6 +16,30 @@ data class RootWeatherModel(
     @SerializedName("current") var current: Current? = Current(),
     @SerializedName("hourly") var hourly: ArrayList<Hourly> = arrayListOf(),
     @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf()
+
+)
+@Entity(tableName = "last_weather_table")
+data class LastWeather(
+    @PrimaryKey
+    val id: Int = 0,
+    @SerializedName("lat") var lat: Double? = null,
+    @SerializedName("lon") var lon: Double? = null,
+    @SerializedName("timezone") var timezone: String? = null,
+    @SerializedName("timezone_offset") var timezoneOffset: Int? = null,
+    @SerializedName("current") var current: Current? = Current(),
+    @SerializedName("hourly") var hourly: ArrayList<Hourly> = arrayListOf(),
+    @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf()
+)
+@Entity(tableName = "alerts_table")
+data class Alerts(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    @SerializedName("sender_name") var senderName: String? = null,
+    @SerializedName("event") var event: String? = null,
+    @SerializedName("start") var start: Long? = null,
+    @SerializedName("end") var end: Long? = null,
+    @SerializedName("description") var description: String? = null,
+    @SerializedName("tags") var tags: List<String>? = null
 
 )
 
@@ -105,3 +133,4 @@ data class Temp(
     @SerializedName("morn") var morn: Double? = null
 
 )
+

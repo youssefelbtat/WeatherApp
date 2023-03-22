@@ -1,4 +1,4 @@
-package com.example.weatherapp.network
+package com.example.weatherapp.data.source.network
 
 import com.example.weatherapp.helper.Constants.BASE_URL
 import retrofit2.Retrofit

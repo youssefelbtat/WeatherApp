@@ -21,16 +21,7 @@ object Convertor{
         sdf.timeZone = TimeZone.getDefault()
         return sdf.format(dt?.times(1000) ?: 0)
     }
-    fun convertZoneOffsetToCity(zoneOffset: String): String? {
-        val allZones = ZoneId.getAvailableZoneIds()
-        for (zoneId in allZones) {
-            val offset = ZoneId.of(zoneId).rules.getOffset(java.time.Instant.now()).toString()
-            if (offset == zoneOffset) {
-                return zoneId.split("/")[1].replace("_", " ")
-            }
-        }
-        return null
-    }
+
 
     fun convertIconToDrawableImage(icon: String?): Int {
         val drawableImage: Int = when (icon?.take(2)) {

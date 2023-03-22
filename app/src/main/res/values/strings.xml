@@ -27,4 +27,6 @@
     <string name="disenable">Disable</string>
     <string name="notifications">Notifications</string>
     <string name="temperature">Temperature</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
 </resources>

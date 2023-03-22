@@ -11,28 +11,29 @@
         android:id="@+id/empty_alert_group"
         android:layout_width="248dp"
         android:layout_height="155dp"
+        android:visibility="visible"
         app:constraint_referenced_ids="img_empty_alert,tv_no_alert"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/img_empty_alert"
-        android:layout_width="370dp"
-        android:layout_height="424dp"
+        android:layout_width="330dp"
+        android:layout_height="289dp"
         android:gravity="center"
-        android:src="@drawable/aler"
+        android:src="@drawable/empty_alert_list"
         app:layout_constraintBottom_toTopOf="@+id/tv_no_alert"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.39"
+        app:layout_constraintHorizontal_bias="0.382"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.851" />
 
     <TextView
         android:id="@+id/tv_no_alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="196dp"
+        android:layout_marginBottom="212dp"
         android:gravity="center"
         android:text="@string/no_alerts_yet"
         android:textSize="38sp"

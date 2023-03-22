@@ -1,18 +1,18 @@
-package com.example.weatherapp.network
+package com.example.weatherapp.data.source.network
 
-import com.example.weatherapp.model.RootWeatherModel
+import com.example.weatherapp.data.model.RootWeatherModel
 
 class WeatherApiClient private constructor() : RemoteWeatherSource {
-    private val weatherAPIService :WeatherAPIService by lazy {
+    private val weatherAPIService : WeatherAPIService by lazy {
         RetrofitHelper.getInstance().create(WeatherAPIService::class.java)
     }
 
 
     companion object {
         private var instance: WeatherApiClient?=null
-        fun getInstance():WeatherApiClient{
-            return instance?: synchronized(this){
-                val temp =WeatherApiClient()
+        fun getInstance(): WeatherApiClient {
+            return instance ?: synchronized(this){
+                val temp = WeatherApiClient()
                 instance = temp
                 temp
             }

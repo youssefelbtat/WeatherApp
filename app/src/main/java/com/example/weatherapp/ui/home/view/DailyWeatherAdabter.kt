@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.databinding.DaysItemBinding
 import com.example.weatherapp.helper.Convertor
-import com.example.weatherapp.model.Daily
+import com.example.weatherapp.data.model.Daily
 
 
 class DailyWeatherAdabter() :

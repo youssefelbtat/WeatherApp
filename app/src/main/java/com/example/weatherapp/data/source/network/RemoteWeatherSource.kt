@@ -1,6 +1,6 @@
-package com.example.weatherapp.network
+package com.example.weatherapp.data.source.network
 
-import com.example.weatherapp.model.RootWeatherModel
+import com.example.weatherapp.data.model.RootWeatherModel
 import retrofit2.Response
 
 interface RemoteWeatherSource {

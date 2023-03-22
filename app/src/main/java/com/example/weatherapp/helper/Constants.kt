@@ -13,8 +13,10 @@ object Constants {
     fun getCityNameByLatAndLon(context: Context, latitude: Double?, longitude: Double?): String? {
         val geocoder = Geocoder(context)
         val addressList = geocoder.getFromLocation(latitude!!, longitude!!, 1)
-        return addressList?.firstOrNull()?.getAddressLine(0)
+        return addressList?.firstOrNull()?.adminArea
     }
+
+
 
 
 }
