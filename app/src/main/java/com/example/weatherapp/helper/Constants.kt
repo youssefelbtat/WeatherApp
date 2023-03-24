@@ -9,6 +9,7 @@ object Constants {
     const val Kelvin = "\u212A"
     const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
     const val APP_ID = "5105a7173c3805fa7994a304fe55b5ea"
+    const val LOCATION_PERMISSION_ID = 21
 
     fun getCityNameByLatAndLon(context: Context, latitude: Double?, longitude: Double?): String? {
         val geocoder = Geocoder(context)

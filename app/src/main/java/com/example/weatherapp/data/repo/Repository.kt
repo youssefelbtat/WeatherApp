@@ -1,5 +1,7 @@
 package com.example.weatherapp.data.repo
 
+import android.content.Context
+import com.example.weatherapp.data.location.LocationManager
 import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
@@ -10,19 +12,22 @@ import kotlinx.coroutines.flow.flowOf
 
 class Repository private constructor(
     var remoteSource: RemoteWeatherSource,
-    var localSource: LocalSourceInterface
+    var localSource: LocalSourceInterface,
+    var locationManager: LocationManager
 ) : RepositoryInterface {
     companion object {
         private const val TAG = "Repository"
         private var instance: Repository? = null
         fun getInstance(
             remoteSource: RemoteWeatherSource,
-            localSource: LocalSourceInterface
+            localSource: LocalSourceInterface,
+            locationManager: LocationManager
         ): Repository {
             return instance ?: synchronized(this) {
                 val temp = Repository(
                     remoteSource,
-                    localSource
+                    localSource,
+                    locationManager
                 )
                 instance = temp
                 temp
@@ -34,6 +39,7 @@ class Repository private constructor(
     init {
         this.remoteSource = remoteSource
         this.localSource= localSource
+        this.locationManager=locationManager
     }
 
     override suspend fun getRootWeatherFromAPI(
@@ -76,6 +82,14 @@ class Repository private constructor(
 
     override suspend fun removeAlert(alert: Alerts) {
         localSource.removeAlert(alert)
+    }
+
+    override suspend fun getLocationGPS(): Pair<Double, Double> {
+      return locationManager.getLocation()
+    }
+
+    override suspend fun getLocationMap(): Pair<Double, Double> {
+        TODO("Not yet implemented")
     }
 
 

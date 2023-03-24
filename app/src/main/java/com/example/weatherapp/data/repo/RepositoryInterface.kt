@@ -26,4 +26,7 @@ interface RepositoryInterface {
     suspend fun insertAlert(alert: Alerts)
 
     suspend fun removeAlert(alert: Alerts)
+
+    suspend fun getLocationGPS():Pair<Double,Double>
+    suspend fun getLocationMap():Pair<Double,Double>
 }

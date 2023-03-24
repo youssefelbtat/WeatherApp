@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weatherapp.data.location.LocationManager
 import com.example.weatherapp.databinding.FragmentHomeBinding
 import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.helper.Convertor
@@ -43,7 +44,8 @@ class HomeFragment : Fragment() {
         homeFragmentViewModelFactory = HomeViewModelFactory(
             Repository.getInstance(
                 WeatherApiClient.getInstance(),
-                ConcreteLocalSource(view.context)
+                ConcreteLocalSource(view.context),
+                LocationManager(view.context)
             )
         )
         viewModel = ViewModelProvider(
@@ -63,13 +65,6 @@ class HomeFragment : Fragment() {
                             view.context,
                             result.data.lat,
                             result.data.lon
-                        )
-                        println(
-                            "The city : " + Constants.getCityNameByLatAndLon(
-                                view.context,
-                                result.data.lat,
-                                result.data.lon
-                            )
                         )
                         binding.tvDegree.text = String.format(
                             "%.1f",

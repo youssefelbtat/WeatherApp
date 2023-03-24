@@ -10,23 +10,23 @@
     android:layout_height="wrap_content">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:layout_height="match_parent"
         android:background="@drawable/background">
 
         <TextView
             android:id="@+id/tv_city_name_fav_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="108dp"
             android:text="Baltim"
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imgv_delete_fav_item"
             app:layout_constraintEnd_toStartOf="@+id/imgv_delete_fav_item"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.422"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imgv_delete_fav_item" />
+            app:layout_constraintTop_toTopOf="@+id/imgv_delete_fav_item"
+            app:layout_constraintVertical_bias="0.485" />
 
         <ImageView
             android:id="@+id/imgv_delete_fav_item"

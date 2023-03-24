@@ -7,17 +7,20 @@ import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.repo.RepositoryInterface
 import com.example.weatherapp.data.source.network.APIState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import java.lang.String.join
 
 class HomeFragmentViewModel(
     private val _irepo: RepositoryInterface
 ) : ViewModel() {
-    private var _apiState = MutableStateFlow<APIState>(APIState.Loading)
-    var apiState: StateFlow<APIState> = _apiState
+    private var _apiState = MutableStateFlow<APIState<RootWeatherModel>>(APIState.Loading)
+    var apiState: StateFlow<APIState<RootWeatherModel>> = _apiState
 
     init {
         getCurrentWeather()
@@ -25,7 +28,8 @@ class HomeFragmentViewModel(
 
     private fun getCurrentWeather() = viewModelScope.launch {
         try {
-            _irepo.getRootWeatherFromAPI(31.5555379, 31.075331, units = "metric", lang = "en")
+            val (latitude, longitude) = _irepo.getLocationGPS()
+            _irepo.getRootWeatherFromAPI(latitude = latitude, longitude =longitude, units = "metric", lang = "en")
                 .collect() {
                     _apiState.value = APIState.Success(it)
                     _irepo.updateLastWeather(
