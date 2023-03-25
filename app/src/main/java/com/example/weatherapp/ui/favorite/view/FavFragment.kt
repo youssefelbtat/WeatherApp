@@ -1,6 +1,7 @@
 package com.example.weatherapp.ui.favorite.view
 
-import android.opengl.Visibility
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,35 +11,46 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherapp.R
 import com.example.weatherapp.data.location.LocationManager
-import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.repo.Repository
 import com.example.weatherapp.data.source.db.ConcreteLocalSource
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
 import com.example.weatherapp.databinding.FragmentFavBinding
-import com.example.weatherapp.databinding.FragmentHomeBinding
 import com.example.weatherapp.helper.Constants
-import com.example.weatherapp.helper.Convertor
+import com.example.weatherapp.helper.Constants.EXTRA_LATITUDE
+import com.example.weatherapp.helper.Constants.EXTRA_LONGITUDE
+import com.example.weatherapp.helper.Constants.REQUEST_CODE_MAPS_ACTIVITY_TO_FAV
+import com.example.weatherapp.helper.Constants.showDialog
+import com.example.weatherapp.helper.Constants.showToast
 import com.example.weatherapp.ui.favorite.viewmodel.FavViewModel
 import com.example.weatherapp.ui.favorite.viewmodel.FavViewModelFactory
-import com.example.weatherapp.ui.home.view.DailyWeatherAdabter
-import com.example.weatherapp.ui.home.view.HourlyWeatherAdabter
-import com.example.weatherapp.ui.home.viewmodel.HomeFragmentViewModel
-import com.example.weatherapp.ui.home.viewmodel.HomeViewModelFactory
+import com.example.weatherapp.ui.map.MapsActivity
+
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class FavFragment : Fragment() {
     private lateinit var binding: FragmentFavBinding
     private lateinit var favFragmentViewModelFactory: FavViewModelFactory
     private lateinit var viewModel: FavViewModel
     private lateinit var favRecyclerAdapter: FavAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_MAPS_ACTIVITY_TO_FAV && resultCode == Activity.RESULT_OK) {
+            val latitude = data?.getDoubleExtra(EXTRA_LATITUDE, 0.0)
+            val longitude = data?.getDoubleExtra(EXTRA_LONGITUDE, 0.0)
+            if (latitude != null && longitude != null) {
+                lifecycleScope.launch {
+                    viewModel.getWeather(latitude, longitude).collect { rootWeatherModel ->
+                        viewModel.addFavWeather(rootWeatherModel)
+                    }
+                }
+            }
+        }
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,10 +69,9 @@ class FavFragment : Fragment() {
         setUpRecyclerViews(view)
 
         binding.fabAddFav.setOnClickListener {
-            viewModel.addFavWeather(RootWeatherModel(
-                lat = 31.5555379,
-                lon = 31.075331
-            ))
+            val intent = Intent(activity, MapsActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_MAPS_ACTIVITY_TO_FAV)
+
         }
 
         lifecycleScope.launchWhenCreated {
@@ -88,11 +99,13 @@ class FavFragment : Fragment() {
     }
     private fun setUpRecyclerViews(view: View) {
         favRecyclerAdapter = FavAdapter(
-            deleteItem = {  it->
-                viewModel.removeFavWeather(it)
+            deleteItem = {  item->
+                showDialog(view.context) {
+                    viewModel.removeFavWeather(item)
+                }
             },
             viewItem = { weatherModel ->
-                Toast.makeText(view.context, "Hello ${weatherModel.lat}", Toast.LENGTH_SHORT).show()
+                showToast(view.context,weatherModel.timezoneOffset.toString())
             }
         )
 

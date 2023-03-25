@@ -30,4 +30,7 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="save">Save</string>
+    <string name="Search">Search</string>
+    <string name="ok">OK</string>
 </resources>

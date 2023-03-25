@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.repo.RepositoryInterface
 import com.example.weatherapp.data.source.network.APIState
+import com.example.weatherapp.helper.Constants.APP_ID
 import com.example.weatherapp.ui.home.viewmodel.HomeFragmentViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -49,6 +51,11 @@ class FavViewModel(
         }
 
     }
+
+    suspend fun getWeather(lat:Double, lon:Double): Flow<RootWeatherModel> {
+        return _irepo.getRootWeatherFromAPI(lat, lon, units = "metric")
+    }
+
 }
 class FavViewModelFactory(private val _irepo: RepositoryInterface) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

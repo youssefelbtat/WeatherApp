@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyAlertDialogStyle" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+        <item name="android:background">@color/bg</item>
+    </style>
+</resources>

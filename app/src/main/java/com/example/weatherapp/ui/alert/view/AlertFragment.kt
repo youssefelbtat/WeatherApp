@@ -15,6 +15,7 @@ import com.example.weatherapp.data.source.db.ConcreteLocalSource
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
 import com.example.weatherapp.databinding.FragmentAlertBinding
+import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.ui.alert.viewmodel.AlertViewModel
 import com.example.weatherapp.ui.alert.viewmodel.AlertViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -50,7 +51,7 @@ class AlertFragment : Fragment() {
         viewModel = ViewModelProvider(
             this,
             alertFragmentViewModelFactory
-        ).get(AlertViewModel::class.java)
+        )[AlertViewModel::class.java]
 
         setUpRecyclerViews(view)
 
@@ -81,8 +82,11 @@ class AlertFragment : Fragment() {
 
     private fun setUpRecyclerViews(view: View) {
         alertRecyclerAdapter = AlertAdapter { it ->
-            viewModel.removeAlertWeather(it)
+            Constants.showDialog(view.context) {
+                viewModel.removeAlertWeather(it)
+            }
         }
+
         binding.rvAlerts.apply {
             adapter = alertRecyclerAdapter.apply {
                 submitList(ArrayList())
