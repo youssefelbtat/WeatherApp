@@ -25,5 +25,14 @@
         android:id="@+id/favFragment"
         android:name="com.example.weatherapp.ui.favorite.view.FavFragment"
         android:label="fragment_fav"
-        tools:layout="@layout/fragment_fav" />
+        tools:layout="@layout/fragment_fav" >
+        <action
+            android:id="@+id/action_favFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/favFragment" >
+        </action>
+        <argument
+            android:name="wather"
+            app:argType="com.example.weatherapp.data.model.RootWeatherModel" />
+    </fragment>
 </navigation>

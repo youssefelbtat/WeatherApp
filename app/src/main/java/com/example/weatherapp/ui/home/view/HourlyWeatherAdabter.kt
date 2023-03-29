@@ -12,6 +12,7 @@ import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.helper.Convertor
 import com.example.weatherapp.data.model.Hourly
 import com.example.weatherapp.data.model.HourlyWeatherModel
+import com.example.weatherapp.helper.addTemperature
 
 class HourlyWeatherAdabter(
 
@@ -32,7 +33,7 @@ class HourlyWeatherAdabter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.time.text = Convertor.convertDtToTime(getItem(position).dt)
-        holder.degree.text = "${getItem(position).temp?.toInt()}${Constants.Celsius}"
+        holder.degree.addTemperature(getItem(position).temp!!, context =  holder.time.context)
         holder.icon.setImageResource(Convertor.convertIconToDrawableImage(getItem(position).weather[0].icon))
 
     }

@@ -5,6 +5,7 @@ import com.example.weatherapp.data.location.LocationManager
 import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.db.LocalSourceInterface
 import com.example.weatherapp.data.source.network.RemoteWeatherSource
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.flowOf
 class Repository private constructor(
     var remoteSource: RemoteWeatherSource,
     var localSource: LocalSourceInterface,
-    var locationManager: LocationManager
+    var locationManager: LocationManager,
+    var settingsSharedPreferences: SettingsSharedPreferences,
 ) : RepositoryInterface {
     companion object {
         private const val TAG = "Repository"
@@ -21,13 +23,15 @@ class Repository private constructor(
         fun getInstance(
             remoteSource: RemoteWeatherSource,
             localSource: LocalSourceInterface,
-            locationManager: LocationManager
+            locationManager: LocationManager,
+            settingsSharedPreferences: SettingsSharedPreferences,
         ): Repository {
             return instance ?: synchronized(this) {
                 val temp = Repository(
                     remoteSource,
                     localSource,
-                    locationManager
+                    locationManager,
+                    settingsSharedPreferences
                 )
                 instance = temp
                 temp
@@ -40,7 +44,10 @@ class Repository private constructor(
         this.remoteSource = remoteSource
         this.localSource= localSource
         this.locationManager=locationManager
+        this.settingsSharedPreferences=settingsSharedPreferences
     }
+
+
 
     override suspend fun getRootWeatherFromAPI(
         latitude: Double,
@@ -84,11 +91,16 @@ class Repository private constructor(
         localSource.removeAlert(alert)
     }
 
+    override fun getLanguageFrom(): String {
+        return settingsSharedPreferences.getShPrefLanguage()?:"en"
+    }
+
     override suspend fun getLocationGPS(): Pair<Double, Double> {
       return locationManager.getLocation()
     }
 
     override suspend fun getLocationMap(): Pair<Double, Double> {
+
         TODO("Not yet implemented")
     }
 

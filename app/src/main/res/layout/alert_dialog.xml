@@ -10,7 +10,7 @@
         android:id="@+id/textViewDeleteConfirmation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Are you sure you want to delete this item?"
+        android:text="@string/are_you_sure_you_want_to_delete_this_item"
         android:textColor="@android:color/black"
         android:textSize="16sp" />
 
@@ -21,11 +21,11 @@
         android:layout_marginTop="16dp">
 
         <Button
-            android:id="@+id/buttonDelete"
+            android:id="@+id/btn_delete_item"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Delete"
+            android:text="@string/delete"
             android:textColor="@android:color/white"
             android:background="@color/super_light_blue"
             android:textAllCaps="false"
@@ -36,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@android:color/black"
             android:background="@android:color/transparent"
             android:textAllCaps="false"

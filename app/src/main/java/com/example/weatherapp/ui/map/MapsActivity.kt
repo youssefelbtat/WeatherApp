@@ -8,12 +8,16 @@ import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityMapsBinding
 import com.example.weatherapp.helper.Constants.EXTRA_LATITUDE
 import com.example.weatherapp.helper.Constants.EXTRA_LONGITUDE
+import com.example.weatherapp.helper.Constants.NO_INTERNET_MESSAGE
+import com.example.weatherapp.helper.Constants.isInternetConnected
+import com.example.weatherapp.helper.Constants.showSnackBar
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.*
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -32,12 +36,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         binding.btnSave.setOnClickListener {
-            val resultIntent = Intent().apply {
-                putExtra(EXTRA_LATITUDE, selectedPlaceLatLng.latitude)
-                putExtra(EXTRA_LONGITUDE, selectedPlaceLatLng.longitude)
+            if (isInternetConnected(this)){
+                val resultIntent = Intent().apply {
+                    putExtra(EXTRA_LATITUDE, selectedPlaceLatLng.latitude)
+                    putExtra(EXTRA_LONGITUDE, selectedPlaceLatLng.longitude)
+                }
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            }else{
+                showSnackBar(binding.root, NO_INTERNET_MESSAGE)
             }
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
+
         }
     }
 
@@ -51,7 +60,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        mMap.addMarker(MarkerOptions().position(sydney).title(" "))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        setMapLongClick(googleMap)
+    }
+    private fun setMapLongClick(map: GoogleMap) {
+        map.setOnMapClickListener { latLng ->
+            map?.clear()
+            val snippet = String.format(
+                Locale.getDefault(), "Lat: %1$.5f, Long: %2$.5f", latLng.latitude, latLng.longitude
+            )
+            val markerOptions = MarkerOptions().position(latLng).snippet(snippet)
+            map.moveCamera(
+                CameraUpdateFactory.newLatLng(
+                    latLng
+                )
+            )
+            map.addMarker(markerOptions)
+
+
+        }
+        map.setOnMapLongClickListener { latLng ->
+        }
+
     }
 }

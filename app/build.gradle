@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'androidx.navigation.safeargs' version '2.5.3'
 }
 
 android {
@@ -36,7 +37,16 @@ android {
         dataBinding true
         viewBinding true
     }
+    buildscript {
+        repositories {
+            google()
+        }
+    }
+
 }
+
+
+
 
 dependencies {
 
@@ -48,8 +58,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //navigation
-    implementation "androidx.navigation:navigation-fragment:2.5.3"
-    implementation "androidx.navigation:navigation-ui:2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
     //Lottie
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"

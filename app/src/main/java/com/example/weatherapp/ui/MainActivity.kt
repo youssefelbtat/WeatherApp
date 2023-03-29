@@ -1,12 +1,17 @@
 package com.example.weatherapp.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.weatherapp.R
+import com.example.weatherapp.data.source.LocaleHelper
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 
@@ -53,4 +58,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             else -> super.onOptionsItemSelected(item)
         }
     }
+    override fun attachBaseContext(newBase: Context) {
+        val sharedPrefs = SettingsSharedPreferences.getInstance(context = newBase)
+        val language = sharedPrefs.getShPrefLanguage()
+        val context = language?.let { LocaleHelper.setLocale(newBase, it) }
+        super.attachBaseContext(context)
+    }
+
 }

@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:elevation="5dp"
-                    android:text="Feels like"
+                    android:text="@string/feels_like"
                     android:textColor="@color/light_blue"
                     android:textSize="28sp"
                     android:textStyle="bold"
@@ -205,7 +205,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="Wind Speed"
+                            android:text="@string/wind_speed"
                             android:textColor="@color/dark_blue"
                             android:textSize="16sp"
                             android:textStyle="bold" />

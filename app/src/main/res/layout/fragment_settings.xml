@@ -64,6 +64,7 @@
         app:layout_constraintTop_toBottomOf="@id/cardView_language">
 
         <RadioGroup
+            android:id="@+id/rg_lang"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
@@ -145,6 +146,7 @@
             android:layout_height="match_parent">
 
             <RadioGroup
+                android:id="@+id/rg_unit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout_editor_absoluteX="0dp"
@@ -152,7 +154,7 @@
                 android:background="@color/white">
 
                 <RadioButton
-                    android:id="@+id/rb_meter"
+                    android:id="@+id/rb_celsius"
                     android:buttonTint="@color/light_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -333,7 +335,7 @@
         android:layout_width="132dp"
         android:layout_height="50dp"
         android:layout_marginBottom="176dp"
-        android:text="Save"
+        android:text="@string/save"
         android:elevation="5dp"
         android:textStyle="bold"
         android:background="@color/light_blue"

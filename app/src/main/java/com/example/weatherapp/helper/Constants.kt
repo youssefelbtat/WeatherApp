@@ -1,13 +1,17 @@
 package com.example.weatherapp.helper
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.location.Geocoder
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import com.example.weatherapp.R
+import com.google.android.material.snackbar.Snackbar
 
 object Constants {
     const val Celsius = "\u2103"
@@ -19,26 +23,45 @@ object Constants {
     const val REQUEST_CODE_MAPS_ACTIVITY_TO_FAV = 100
     const val EXTRA_LATITUDE = "latitude"
     const val EXTRA_LONGITUDE = "longitude"
+    const val NO_INTERNET_MESSAGE = "No internet connection"
+    const val TRY_LATER_MESSAGE = "Try Later !"
+    const val SH_PRF_LANG_KEY = "language"
+    const val SH_PRF_UNIT_KEY = "unit"
 
     fun getCityNameByLatAndLon(context: Context, latitude: Double?, longitude: Double?): String? {
         val geocoder = Geocoder(context)
         val addressList = geocoder.getFromLocation(latitude!!, longitude!!, 1)
-        return if (addressList?.firstOrNull()?.locality != null)
-            addressList?.firstOrNull()?.locality
-        else if (addressList?.firstOrNull()?.subAdminArea != null)
+        return if (addressList?.firstOrNull()?.subAdminArea != null)
             addressList?.firstOrNull()?.subAdminArea
         else if (addressList?.firstOrNull()?.adminArea != null)
             addressList?.firstOrNull()?.adminArea
         else
             addressList?.firstOrNull()?.countryName
     }
-    fun showDialog(context: Context, onClick: () -> Unit) {
+
+
+    fun showToast(context: Context,message:String){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+    fun showSnackBar(rootView: View, message:String){
+        Snackbar.make(rootView, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    fun isInternetConnected(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+
+    fun showDeleteDialog(context: Context, onClick: () -> Unit) {
         val builder = AlertDialog.Builder(context)
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.alert_dialog, null)
 
-        val textViewDeleteConfirmation: TextView = dialogView.findViewById(R.id.textViewDeleteConfirmation)
-        val buttonDelete: Button = dialogView.findViewById(R.id.buttonDelete)
+        val buttonDelete: Button = dialogView.findViewById(R.id.btn_delete_item)
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
 
         builder.setView(dialogView)
@@ -56,10 +79,6 @@ object Constants {
         }
 
         dialog.show()
-    }
-
-    fun showToast(context: Context,message:String){
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
 }

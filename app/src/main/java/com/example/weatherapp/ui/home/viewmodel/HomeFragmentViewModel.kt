@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.repo.RepositoryInterface
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.network.APIState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,8 @@ class HomeFragmentViewModel(
     private fun getCurrentWeather() = viewModelScope.launch {
         try {
             val (latitude, longitude) = _irepo.getLocationGPS()
-            _irepo.getRootWeatherFromAPI(latitude = latitude, longitude =longitude, units = "metric", lang = "en")
+            val lang=_irepo.getLanguageFrom()
+            _irepo.getRootWeatherFromAPI(latitude = latitude, longitude =longitude, units = "metric", lang = lang)
                 .collect() {
                     _apiState.value = APIState.Success(it)
                     _irepo.updateLastWeather(

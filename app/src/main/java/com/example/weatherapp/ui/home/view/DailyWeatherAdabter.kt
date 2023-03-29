@@ -11,14 +11,15 @@ import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.databinding.DaysItemBinding
 import com.example.weatherapp.helper.Convertor
 import com.example.weatherapp.data.model.Daily
+import com.example.weatherapp.helper.addTemperature
+import com.example.weatherapp.helper.addTemperatureMaxAndMin
 
 
 class DailyWeatherAdabter() :
-    ListAdapter<Daily, DailyWeatherAdabter.ViewHolder>( DailyDiffUtil()) {
-    
+    ListAdapter<Daily, DailyWeatherAdabter.ViewHolder>(DailyDiffUtil()) {
+
     class ViewHolder(private val binding: DaysItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val day: TextView = binding.dailyItemDay
-        val unit: TextView = binding.dailyItemUnit
         val icon: ImageView = binding.imgDailyItemIcon
         val temp: TextView = binding.tvDailyItemTemp
         val des: TextView = binding.tvDailyItemDescription
@@ -33,8 +34,11 @@ class DailyWeatherAdabter() :
         holder.day.text = Convertor.convertDtToDay(getItem(position).dt)
         holder.des.text = getItem(position).weather[0].description
         holder.icon.setImageResource(Convertor.convertIconToDrawableImage(getItem(position).weather[0].icon))
-        holder.unit.text = Constants.Celsius
-        holder.temp.text ="${getItem(position).temp?.max} / ${getItem(position).temp?.min}"
+        holder.temp.addTemperatureMaxAndMin(
+            maxTemp = getItem(position).temp?.max?:0.0,
+            minTemp = getItem(position).temp?.min?:0.0,
+            context = holder.day.context
+        )
 
     }
 }

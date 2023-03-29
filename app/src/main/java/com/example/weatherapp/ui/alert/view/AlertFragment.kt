@@ -1,21 +1,26 @@
 package com.example.weatherapp.ui.alert.view
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weatherapp.R
 import com.example.weatherapp.data.location.LocationManager
 import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.repo.Repository
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.db.ConcreteLocalSource
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
 import com.example.weatherapp.databinding.FragmentAlertBinding
-import com.example.weatherapp.helper.Constants
+import com.example.weatherapp.helper.Constants.showDeleteDialog
 import com.example.weatherapp.ui.alert.viewmodel.AlertViewModel
 import com.example.weatherapp.ui.alert.viewmodel.AlertViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -26,10 +31,7 @@ class AlertFragment : Fragment() {
     private lateinit var alertFragmentViewModelFactory: AlertViewModelFactory
     private lateinit var viewModel: AlertViewModel
     private lateinit var alertRecyclerAdapter: AlertAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +47,8 @@ class AlertFragment : Fragment() {
             Repository.getInstance(
                 WeatherApiClient.getInstance(),
                 ConcreteLocalSource(view.context),
-                LocationManager(view.context)
+                LocationManager(view.context),
+                SettingsSharedPreferences.getInstance(view.context)
             )
         )
         viewModel = ViewModelProvider(
@@ -70,19 +73,21 @@ class AlertFragment : Fragment() {
             }
         }
         binding.fabAddAlert.setOnClickListener {
-            viewModel.addAlertWeather(
-                Alerts(
-                    start = 1020,
-                    end = 1025
-
+            showAddAlertDialog(requireContext()){
+                viewModel.addAlertWeather(
+                    Alerts(
+                        start = 1020,
+                        end = 1025
+                    )
                 )
-            )
+            }
+
         }
     }
 
     private fun setUpRecyclerViews(view: View) {
         alertRecyclerAdapter = AlertAdapter { it ->
-            Constants.showDialog(view.context) {
+            showDeleteDialog(view.context) {
                 viewModel.removeAlertWeather(it)
             }
         }
@@ -106,6 +111,31 @@ class AlertFragment : Fragment() {
         println("On Success:")
         binding.emptyAlertGroup.visibility = View.GONE
         binding.rvAlerts.visibility = View.VISIBLE
+    }
+
+    private fun showAddAlertDialog(context: Context, onClick: () -> Unit) {
+        val builder = AlertDialog.Builder(context)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.set_alert_dialog, null)
+
+        val btnSave: Button = dialogView.findViewById(R.id.btn_save_alert)
+        val btnCancel: Button = dialogView.findViewById(R.id.btn_cancel_alert)
+
+        builder.setView(dialogView)
+
+        val dialog = builder.create()
+
+        btnSave.setOnClickListener {
+            onClick.invoke()
+            dialog.dismiss()
+
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
 

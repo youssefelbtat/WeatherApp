@@ -9,10 +9,7 @@ import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
 
-@Database(
-    entities = [RootWeatherModel::class, LastWeather::class, Alerts::class],
-    version = 1
-)
+@Database(entities = [RootWeatherModel::class, LastWeather::class, Alerts::class], version = 1)
 @TypeConverters(DailyTypeConverter::class, HourlyTypeConverter::class,CurrentConverter::class,StringListConverter::class)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao

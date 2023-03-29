@@ -1,8 +1,10 @@
 package com.example.weatherapp.data.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 @Entity(tableName = "favorites_table")
@@ -17,7 +19,7 @@ data class RootWeatherModel(
     @SerializedName("hourly") var hourly: ArrayList<Hourly> = arrayListOf(),
     @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf()
 
-)
+): Serializable
 @Entity(tableName = "last_weather_table")
 data class LastWeather(
     @PrimaryKey
@@ -29,7 +31,7 @@ data class LastWeather(
     @SerializedName("current") var current: Current? = Current(),
     @SerializedName("hourly") var hourly: ArrayList<Hourly> = arrayListOf(),
     @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf()
-)
+):Serializable
 @Entity(tableName = "alerts_table")
 data class Alerts(
     @PrimaryKey(autoGenerate = true)
@@ -41,7 +43,7 @@ data class Alerts(
     @SerializedName("description") var description: String? = null,
     @SerializedName("tags") var tags: List<String>? = null
 
-)
+):Serializable
 
 data class Weather(
 
@@ -50,7 +52,7 @@ data class Weather(
     @SerializedName("description") var description: String? = null,
     @SerializedName("icon") var icon: String? = null
 
-)
+):Serializable
 
 data class Current(
 
@@ -70,7 +72,7 @@ data class Current(
     @SerializedName("wind_gust") var windGust: Double? = null,
     @SerializedName("weather") var weather: ArrayList<Weather> = arrayListOf()
 
-)
+):Serializable
 
 data class Hourly(
 
@@ -89,7 +91,7 @@ data class Hourly(
     @SerializedName("weather") var weather: ArrayList<Weather> = arrayListOf(),
     @SerializedName("pop") var pop: Double? = null
 
-)
+):Serializable
 
 data class Daily(
 
@@ -112,7 +114,7 @@ data class Daily(
     @SerializedName("pop") var pop: Double? = null,
     @SerializedName("uvi") var uvi: Double? = null
 
-)
+):Serializable
 
 data class FeelsLike(
 
@@ -121,7 +123,7 @@ data class FeelsLike(
     @SerializedName("eve") var eve: Double? = null,
     @SerializedName("morn") var morn: Double? = null
 
-)
+):Serializable
 
 data class Temp(
 
@@ -132,5 +134,5 @@ data class Temp(
     @SerializedName("eve") var eve: Double? = null,
     @SerializedName("morn") var morn: Double? = null
 
-)
+):Serializable
 

@@ -30,8 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
             android:layout_marginEnd="2dp"
-            android:text="Saturday"
-            android:textColor="@color/design_default_color_on_secondary"
+            tools:text="Saturday"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,37 +48,26 @@
             android:lines="2"
             android:maxLines="2"
             android:minLines="2"
-            android:text="Thunder Storm"
             android:textColor="@color/purple"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/img_daily_item_icon"
             app:layout_constraintEnd_toStartOf="@id/tv_daily_item_temp"
             app:layout_constraintStart_toEndOf="@+id/img_daily_item_icon"
-            app:layout_constraintTop_toTopOf="@+id/img_daily_item_icon" />
+            app:layout_constraintTop_toTopOf="@+id/img_daily_item_icon"
+            tools:text="Thunder Storm" />
 
         <TextView
             android:id="@+id/tv_daily_item_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="16dp"
             android:text="12.50/13.50"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/daily_item_unit"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/daily_item_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:text="@string/Celsius"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_daily_item_temp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_daily_item_temp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

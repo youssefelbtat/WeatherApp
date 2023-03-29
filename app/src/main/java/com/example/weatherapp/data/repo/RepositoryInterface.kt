@@ -27,6 +27,8 @@ interface RepositoryInterface {
 
     suspend fun removeAlert(alert: Alerts)
 
+    fun getLanguageFrom(): String
+
     suspend fun getLocationGPS():Pair<Double,Double>
     suspend fun getLocationMap():Pair<Double,Double>
 }

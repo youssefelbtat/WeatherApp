@@ -6,23 +6,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weatherapp.R
 import com.example.weatherapp.data.location.LocationManager
 import com.example.weatherapp.data.repo.Repository
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.db.ConcreteLocalSource
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
 import com.example.weatherapp.databinding.FragmentFavBinding
-import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.helper.Constants.EXTRA_LATITUDE
 import com.example.weatherapp.helper.Constants.EXTRA_LONGITUDE
+import com.example.weatherapp.helper.Constants.NO_INTERNET_MESSAGE
 import com.example.weatherapp.helper.Constants.REQUEST_CODE_MAPS_ACTIVITY_TO_FAV
-import com.example.weatherapp.helper.Constants.showDialog
-import com.example.weatherapp.helper.Constants.showToast
+import com.example.weatherapp.helper.Constants.isInternetConnected
+import com.example.weatherapp.helper.Constants.showDeleteDialog
+import com.example.weatherapp.helper.Constants.showSnackBar
 import com.example.weatherapp.ui.favorite.viewmodel.FavViewModel
 import com.example.weatherapp.ui.favorite.viewmodel.FavViewModelFactory
 import com.example.weatherapp.ui.map.MapsActivity
@@ -51,26 +54,33 @@ class FavFragment : Fragment() {
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         favFragmentViewModelFactory = FavViewModelFactory(
             Repository.getInstance(
                 WeatherApiClient.getInstance(),
                 ConcreteLocalSource(view.context),
-                LocationManager(view.context)
+                LocationManager(view.context),
+                SettingsSharedPreferences.getInstance(view.context)
             )
         )
         viewModel = ViewModelProvider(
             this,
             favFragmentViewModelFactory
-        ).get(FavViewModel::class.java)
+        )[FavViewModel::class.java]
 
         setUpRecyclerViews(view)
 
         binding.fabAddFav.setOnClickListener {
-            val intent = Intent(activity, MapsActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_MAPS_ACTIVITY_TO_FAV)
+            if (isInternetConnected(requireContext())){
+                val intent = Intent(activity, MapsActivity::class.java)
+                startActivityForResult(intent, REQUEST_CODE_MAPS_ACTIVITY_TO_FAV)
+            }else{
+                showSnackBar( binding.root,NO_INTERNET_MESSAGE)
+            }
+
 
         }
 
@@ -83,7 +93,7 @@ class FavFragment : Fragment() {
                         favRecyclerAdapter.submitList(result.data)
                     }
                     else -> {
-
+                        //showSnackBar(binding.root,TRY_LATER_MESSAGE)
                     }
                 }
             }
@@ -100,12 +110,17 @@ class FavFragment : Fragment() {
     private fun setUpRecyclerViews(view: View) {
         favRecyclerAdapter = FavAdapter(
             deleteItem = {  item->
-                showDialog(view.context) {
+                showDeleteDialog(view.context) {
                     viewModel.removeFavWeather(item)
                 }
             },
             viewItem = { weatherModel ->
-                showToast(view.context,weatherModel.timezoneOffset.toString())
+
+                val bundle = Bundle()
+                bundle.putSerializable("weather", weatherModel)
+                findNavController().navigate(R.id.action_favFragment_to_homeFragment,bundle)
+
+                //navigate to home fragment to show the weather Model data there
             }
         )
 
@@ -119,16 +134,15 @@ class FavFragment : Fragment() {
     }
 
     private fun showEmpty(){
-        println("On Empty:")
+
         binding.emptyFavGroup.visibility=View.VISIBLE
         binding.rvFav.visibility = View.GONE
     }
     private fun showList(){
-        println("On Success:")
+
         binding.emptyFavGroup.visibility=View.GONE
         binding.rvFav.visibility = View.VISIBLE
     }
-
 
 
 }

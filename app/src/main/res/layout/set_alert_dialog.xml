@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="8dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="44dp"
+        android:text="From"
+        android:textColor="@color/light_blue"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:text="To"
+        android:textColor="@color/light_blue"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Set Alerm"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edt_start_time"
+        android:layout_width="114dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="24dp"
+        android:drawableEnd="@drawable/alert_time_icon"
+        android:focusable="false"
+        android:gravity="center"
+        android:hint="01:34 PM"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <EditText
+        android:id="@+id/edt_start_date"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/alert_date_icon"
+        android:focusable="false"
+        android:gravity="center"
+        android:hint="27/03/2023"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="@+id/edt_start_time"
+        app:layout_constraintHorizontal_bias="0.323"
+        app:layout_constraintStart_toStartOf="@+id/edt_start_time"
+        app:layout_constraintTop_toBottomOf="@+id/edt_start_time" />
+
+    <EditText
+        android:id="@+id/edt_end_date"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/alert_date_icon"
+        android:focusable="false"
+        android:gravity="center"
+        android:hint="27/03/2023"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_start_date"
+        app:layout_constraintEnd_toEndOf="@+id/edt_end_time"
+        app:layout_constraintStart_toStartOf="@+id/edt_end_time"
+        app:layout_constraintTop_toTopOf="@+id/edt_start_date" />
+
+    <EditText
+        android:id="@+id/edt_end_time"
+        android:layout_width="114dp"
+        android:layout_height="54dp"
+        android:drawableEnd="@drawable/alert_time_icon"
+        android:focusable="false"
+        android:gravity="center"
+        android:hint="01:34 PM"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_start_time"
+        app:layout_constraintEnd_toEndOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/edt_start_time" />
+
+    <LinearLayout
+        android:padding="10dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="236dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/radioGroup"
+        app:layout_constraintStart_toStartOf="@+id/radioGroup">
+
+        <Button
+            android:id="@+id/btn_save_alert"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/super_light_blue"
+            android:padding="8dp"
+            android:text="Save"
+
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_cancel_alert"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="278dp"
+        android:layout_height="51dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_start_date">
+
+        <RadioButton
+            android:id="@+id/rb_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Notifications"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/rb_alerm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Alarm"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

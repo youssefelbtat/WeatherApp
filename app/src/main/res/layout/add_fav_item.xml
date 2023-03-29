@@ -17,7 +17,6 @@
             android:id="@+id/tv_city_name_fav_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Baltim"
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -26,7 +25,8 @@
             app:layout_constraintHorizontal_bias="0.422"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imgv_delete_fav_item"
-            app:layout_constraintVertical_bias="0.485" />
+            app:layout_constraintVertical_bias="0.485"
+            tools:text="Baltim" />
 
         <ImageView
             android:id="@+id/imgv_delete_fav_item"

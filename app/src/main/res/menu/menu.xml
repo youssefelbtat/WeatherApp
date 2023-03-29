@@ -2,25 +2,25 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
-        <item android:title="Home"
+        <item android:title="@string/home_item"
             android:icon="@drawable/home_icon"
             android:id="@+id/homeFragment"
             android:tint="@color/light_blue"
             />
         <item
             android:id="@+id/favFragment"
-            android:title="Favorite"
+            android:title="@string/favorite"
             android:tint="@color/light_blue"
             android:icon="@drawable/baseline_favorite_24"
             />
         <item
             android:id="@+id/alertFragment"
-            android:title="Alert"
+            android:title="@string/alert_item"
             android:tint="@color/light_blue"
             android:icon="@drawable/baseline_notifications_24"
             />
 
-        <item android:title="Settings"
+        <item android:title="@string/settings_item"
             android:id="@+id/settingsFragment"
             android:icon="@drawable/settings_icon"
             android:tint="@color/light_blue"
