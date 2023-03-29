@@ -31,7 +31,6 @@ class RepositoryTest {
 
     @Before
     fun setup() {
-       // val context = ApplicationProvider.getApplicationContext<Context>()
         val fakeRemoteSource = FakeRemoteWeatherSource()
         val fakeLocalSource = FakeLocalSource()
         val locationManager = LocationManager(ApplicationProvider.getApplicationContext())

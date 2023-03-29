@@ -6,7 +6,11 @@ import com.example.weatherapp.data.model.RootWeatherModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-class FakeRepository : RepositoryInterface{
+class FakeRepository : RepositoryInterface {
+     private val favorites = mutableListOf<RootWeatherModel>()
+    private var lastWeather: LastWeather? = null
+    private val alerts = mutableListOf<Alerts>()
+
     override suspend fun getRootWeatherFromAPI(
         latitude: Double,
         longitude: Double,
@@ -18,15 +22,19 @@ class FakeRepository : RepositoryInterface{
     }
 
     override suspend fun getAllFavorites(): Flow<List<RootWeatherModel>> {
-        return flowOf(listOf(RootWeatherModel(), RootWeatherModel()))
+        return flowOf(favorites.toList())
     }
 
     override suspend fun getLastWeather(): Flow<LastWeather> {
-        return flowOf(LastWeather())
+        return flowOf(lastWeather ?: LastWeather())
+    }
+
+    fun clearALlList(){
+        favorites.clear()
     }
 
     override fun getAllAlerts(): Flow<List<Alerts>> {
-        return flowOf(listOf(Alerts(), Alerts()))
+        return flowOf(alerts.toList())
     }
 
     override fun getLanguageFromShdPref(): String {
@@ -40,22 +48,24 @@ class FakeRepository : RepositoryInterface{
     override suspend fun getLocationMap(): Pair<Double, Double> {
         return Pair(0.0, 0.0)
     }
+
     override suspend fun insertAlert(alert: Alerts) {
-        TODO("Not yet implemented")
+        alerts.add(alert)
     }
 
     override suspend fun removeAlert(alert: Alerts) {
-        TODO("Not yet implemented")
+        alerts.remove(alert)
     }
+
     override suspend fun updateLastWeather(lastWeather: LastWeather) {
-        TODO("Not yet implemented")
+        this.lastWeather = lastWeather
     }
+
     override suspend fun insertFavorite(favorite: RootWeatherModel) {
-        TODO("Not yet implemented")
+        favorites.add(favorite)
     }
 
     override suspend fun removeFavorite(favorite: RootWeatherModel) {
-        TODO("Not yet implemented")
+        favorites.remove(favorite)
     }
-
 }
