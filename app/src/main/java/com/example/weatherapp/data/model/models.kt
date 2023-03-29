@@ -3,6 +3,7 @@ package com.example.weatherapp.data.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.weatherapp.helper.AlertType
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -41,7 +42,8 @@ data class Alerts(
     @SerializedName("start") var start: Long? = null,
     @SerializedName("end") var end: Long? = null,
     @SerializedName("description") var description: String? = null,
-    @SerializedName("tags") var tags: List<String>? = null
+    @SerializedName("tags") var tags: List<String>? = null,
+    var type:String?= AlertType.NOTIFICATION.name
 
 ):Serializable
 

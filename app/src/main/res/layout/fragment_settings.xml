@@ -192,6 +192,7 @@
         app:layout_constraintTop_toBottomOf="@id/cv_location">
 
         <RadioGroup
+            android:id="@+id/rg_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
@@ -267,6 +268,7 @@
         app:layout_constraintTop_toBottomOf="@id/cv_notification">
 
         <RadioGroup
+            android:id="@+id/rg_notifications"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >

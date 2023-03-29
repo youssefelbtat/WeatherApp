@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface RepositoryInterface {
     suspend fun getRootWeatherFromAPI(
-        latitude: Double, longitude: Double, appid: String = APP_ID, units: String,
+        latitude: Double, longitude: Double, appid: String = APP_ID, units: String="metric",
         lang: String="en"
     ): Flow<RootWeatherModel>
     suspend fun getAllFavorites(): Flow<List<RootWeatherModel>>
@@ -27,7 +27,7 @@ interface RepositoryInterface {
 
     suspend fun removeAlert(alert: Alerts)
 
-    fun getLanguageFrom(): String
+    fun getLanguageFromShdPref(): String
 
     suspend fun getLocationGPS():Pair<Double,Double>
     suspend fun getLocationMap():Pair<Double,Double>

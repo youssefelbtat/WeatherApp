@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -120,10 +122,19 @@ class AlertFragment : Fragment() {
 
         val btnSave: Button = dialogView.findViewById(R.id.btn_save_alert)
         val btnCancel: Button = dialogView.findViewById(R.id.btn_cancel_alert)
+        val edtStartDate :EditText = dialogView.findViewById(R.id.edt_start_date)
+        val edtEndDate :EditText = dialogView.findViewById(R.id.edt_end_date)
+        val edtStartTime :EditText = dialogView.findViewById(R.id.edt_start_time)
+        val edtEndTime :EditText = dialogView.findViewById(R.id.edt_end_time)
+        val alertType :RadioGroup =dialogView.findViewById(R.id.radioGroup)
 
         builder.setView(dialogView)
 
         val dialog = builder.create()
+
+        edtStartDate.setOnClickListener {
+            //show date picker and get date from the user
+        }
 
         btnSave.setOnClickListener {
             onClick.invoke()

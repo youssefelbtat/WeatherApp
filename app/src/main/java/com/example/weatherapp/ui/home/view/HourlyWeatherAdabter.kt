@@ -11,7 +11,6 @@ import com.example.weatherapp.databinding.HourlyItemsBinding
 import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.helper.Convertor
 import com.example.weatherapp.data.model.Hourly
-import com.example.weatherapp.data.model.HourlyWeatherModel
 import com.example.weatherapp.helper.addTemperature
 
 class HourlyWeatherAdabter(

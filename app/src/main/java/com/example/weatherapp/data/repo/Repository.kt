@@ -91,7 +91,7 @@ class Repository private constructor(
         localSource.removeAlert(alert)
     }
 
-    override fun getLanguageFrom(): String {
+    override fun getLanguageFromShdPref(): String {
         return settingsSharedPreferences.getShPrefLanguage()?:"en"
     }
 

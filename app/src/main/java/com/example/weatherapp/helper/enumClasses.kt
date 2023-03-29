@@ -10,3 +10,20 @@ enum class Units {
         FAHRENHEIT,
         KELVIN
 }
+
+enum class NotificationEnum {
+        ENABLE,
+        DISABLE,
+}
+
+enum class LocationEnum {
+        GPS,
+        MAP,
+}
+
+enum class AlertType{
+        NOTIFICATION,
+        ALARM
+}
+
+

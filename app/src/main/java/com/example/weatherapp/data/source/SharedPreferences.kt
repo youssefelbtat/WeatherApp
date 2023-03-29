@@ -7,7 +7,12 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weatherapp.helper.Constants.SH_PRF_LANG_KEY
+import com.example.weatherapp.helper.Constants.SH_PRF_LOCATION_KEY
+import com.example.weatherapp.helper.Constants.SH_PRF_NOTIFICATION_KEY
+import com.example.weatherapp.helper.Constants.SH_PRF_UNIT_KEY
 import com.example.weatherapp.helper.Language
+import com.example.weatherapp.helper.LocationEnum
+import com.example.weatherapp.helper.NotificationEnum
 import com.example.weatherapp.helper.Units
 import java.util.*
 
@@ -26,7 +31,7 @@ object LocaleHelper {
 
 }
 
-class SettingsSharedPreferences private constructor(context: Context) {
+ class SettingsSharedPreferences private constructor(context: Context) {
 
     private val sharedPreferences: SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -39,7 +44,7 @@ class SettingsSharedPreferences private constructor(context: Context) {
         }
     }
 
-    fun setShPrefLanguage(lang: Language) {
+     fun setShPrefLanguage(lang: Language) {
         sharedPreferences.edit().putString(SH_PRF_LANG_KEY, lang.value).apply()
     }
 
@@ -48,11 +53,27 @@ class SettingsSharedPreferences private constructor(context: Context) {
     }
 
     fun setShPrefUnit(unit: Units) {
-        sharedPreferences.edit().putString(SH_PRF_LANG_KEY, unit.name).apply()
+        sharedPreferences.edit().putString(SH_PRF_UNIT_KEY, unit.name).apply()
     }
 
     fun getShPrefUnit(): String? {
-        return sharedPreferences.getString(SH_PRF_LANG_KEY, Units.CELSIUS.name)
+        return sharedPreferences.getString(SH_PRF_UNIT_KEY, Units.CELSIUS.name)
+    }
+
+    fun setShPrefNotification(state: NotificationEnum) {
+        sharedPreferences.edit().putString(SH_PRF_NOTIFICATION_KEY, state.name).apply()
+    }
+
+    fun getShPrefNotification(): String? {
+        return sharedPreferences.getString(SH_PRF_NOTIFICATION_KEY, NotificationEnum.DISABLE.name)
+    }
+
+    fun setShPrefLocation(location: LocationEnum) {
+        sharedPreferences.edit().putString(SH_PRF_LOCATION_KEY, location.name).apply()
+    }
+
+    fun getShPrefLocation(): String? {
+        return sharedPreferences.getString(SH_PRF_LOCATION_KEY, LocationEnum.GPS.name)
     }
 }
 

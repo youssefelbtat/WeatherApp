@@ -14,6 +14,8 @@ import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.databinding.FragmentFavBinding
 import com.example.weatherapp.databinding.FragmentSettingsBinding
 import com.example.weatherapp.helper.Language
+import com.example.weatherapp.helper.LocationEnum
+import com.example.weatherapp.helper.NotificationEnum
 import com.example.weatherapp.helper.Units
 
 
@@ -40,6 +42,8 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initLangGroup()
         initUnitGroup()
+        initNotificationGroup()
+        initLocationGroup()
         binding.rgLang.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rb_arabic -> {
@@ -68,6 +72,32 @@ class SettingsFragment : Fragment() {
                 }
             }
         }
+
+        binding.rgNotifications.setOnCheckedChangeListener{ _, checkedId ->
+            when (checkedId) {
+                R.id.rb_Enable -> {
+                    sharedPreferences.setShPrefNotification(NotificationEnum.ENABLE)
+                }
+
+                R.id.rb_Desable -> {
+                    sharedPreferences.setShPrefNotification(NotificationEnum.DISABLE)
+                }
+
+            }
+        }
+
+        binding.rgLocation.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_gps -> {
+                    sharedPreferences.setShPrefLocation(LocationEnum.GPS)
+                }
+
+                R.id.rb_map -> {
+                    sharedPreferences.setShPrefLocation(LocationEnum.MAP)
+                }
+
+            }
+        }
     }
 
     private fun initLangGroup() {
@@ -79,7 +109,24 @@ class SettingsFragment : Fragment() {
             binding.rbArabic.isChecked = false
         }
     }
-
+    private fun initNotificationGroup() {
+        if (sharedPreferences.getShPrefNotification() == NotificationEnum.ENABLE.name) {
+            binding.rbEnable.isChecked = true
+            binding.rbDesable.isChecked = false
+        } else {
+            binding.rbEnable.isChecked = false
+            binding.rbDesable.isChecked = true
+        }
+    }
+    private fun initLocationGroup() {
+        if (sharedPreferences.getShPrefLocation() == LocationEnum.GPS.name) {
+            binding.rbGps.isChecked = true
+            binding.rbMap.isChecked = false
+        } else {
+            binding.rbGps.isChecked = false
+            binding.rbMap.isChecked = true
+        }
+    }
     private fun initUnitGroup() {
         if (sharedPreferences.getShPrefUnit() == Units.CELSIUS.name) {
             binding.rbCelsius.isChecked=true

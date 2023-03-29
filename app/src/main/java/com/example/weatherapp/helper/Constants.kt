@@ -26,7 +26,9 @@ object Constants {
     const val NO_INTERNET_MESSAGE = "No internet connection"
     const val TRY_LATER_MESSAGE = "Try Later !"
     const val SH_PRF_LANG_KEY = "language"
+    const val SH_PRF_NOTIFICATION_KEY = "notification"
     const val SH_PRF_UNIT_KEY = "unit"
+    const val SH_PRF_LOCATION_KEY = "unit"
 
     fun getCityNameByLatAndLon(context: Context, latitude: Double?, longitude: Double?): String? {
         val geocoder = Geocoder(context)
