@@ -1,8 +1,6 @@
 package com.example.weatherapp.data.repo
 
-import com.example.weatherapp.data.model.Alerts
-import com.example.weatherapp.data.model.LastWeather
-import com.example.weatherapp.data.model.RootWeatherModel
+import com.example.weatherapp.data.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -10,6 +8,7 @@ class FakeRepository : RepositoryInterface {
      private val favorites = mutableListOf<RootWeatherModel>()
     private var lastWeather: LastWeather? = null
     private val alerts = mutableListOf<Alerts>()
+    private lateinit var gpsLocation :Pair<Double,Double>
 
     override suspend fun getRootWeatherFromAPI(
         latitude: Double,
@@ -18,8 +17,18 @@ class FakeRepository : RepositoryInterface {
         units: String,
         lang: String
     ): Flow<RootWeatherModel> {
-        return flowOf(RootWeatherModel())
+        val rootWeatherModel = RootWeatherModel(
+            lat = gpsLocation.first,
+            lon = gpsLocation.second,
+            timezone = "GMT",
+            current = Current(),
+            daily = arrayListOf(Daily()),
+            hourly = arrayListOf(Hourly()),
+            timezoneOffset = 0
+        )
+        return flowOf(rootWeatherModel)
     }
+
 
     override suspend fun getAllFavorites(): Flow<List<RootWeatherModel>> {
         return flowOf(favorites.toList())
@@ -42,7 +51,11 @@ class FakeRepository : RepositoryInterface {
     }
 
     override suspend fun getLocationGPS(): Pair<Double, Double> {
-        return Pair(0.0, 0.0)
+        return gpsLocation
+    }
+
+    fun setLocationGPS(cord: Pair<Double,Double>){
+        gpsLocation=cord
     }
 
     override suspend fun getLocationMap(): Pair<Double, Double> {
