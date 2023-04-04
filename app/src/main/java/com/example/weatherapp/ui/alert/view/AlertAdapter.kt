@@ -7,27 +7,44 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weatherapp.R
 import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.databinding.AddAlertItemBinding
 import com.example.weatherapp.data.model.RootWeatherModel
+import com.example.weatherapp.helper.AlertType
+import com.example.weatherapp.helper.Convertor
 
 class AlertAdapter(var deleteAlert: (Alerts) -> Unit) :
-    ListAdapter<Alerts, AlertAdapter.ViewHolder>( DailyDiffUtil()) {
+    ListAdapter<Alerts, AlertAdapter.ViewHolder>(DailyDiffUtil()) {
 
-    class ViewHolder(private val binding: AddAlertItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val tvStartTime: TextView = binding.tvStartAlertItem
-        val tvEndTime: TextView = binding.tvEndAlertItem
+    class ViewHolder(private val binding: AddAlertItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val tvStartTime: TextView = binding.tvStartAlertTimeItem
+        val tvEndTime: TextView = binding.tvEndAlertTimeItem
+        val tvEndDate: TextView = binding.tvAlertEndDate
+        val tvStartDate: TextView = binding.tvAlertStartDate
         val imgDelete: ImageView = binding.imgvDeleteAletItem
+        val imgIcon: ImageView = binding.imvAlertType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = AddAlertItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            AddAlertItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvStartTime.text=getItem(position).start.toString()
-        holder.tvEndTime.text=getItem(position).end.toString()
+        println("The start is: ${getItem(position).start} The end is : ${getItem(position).end}")
+        holder.tvStartTime.text = Convertor.convertDtToTime(getItem(position).start)
+        holder.tvEndTime.text = Convertor.convertDtToTime(getItem(position).end)
+        holder.tvStartDate.text = Convertor.convertDtToNumberDate(getItem(position).start)
+        holder.tvEndDate.text = Convertor.convertDtToNumberDate(getItem(position).end)
+        if (getItem(position).type == AlertType.NOTIFICATION.name) {
+            holder.imgIcon.setImageResource(R.drawable.alarm_notif)
+        } else {
+            holder.imgIcon.setImageResource(R.drawable.aler)
+        }
+
         holder.imgDelete.setOnClickListener {
             deleteAlert(getItem(position))
         }

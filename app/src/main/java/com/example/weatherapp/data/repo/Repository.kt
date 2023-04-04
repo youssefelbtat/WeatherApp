@@ -1,6 +1,7 @@
 package com.example.weatherapp.data.repo
 
 import android.content.Context
+import androidx.work.*
 import com.example.weatherapp.data.location.LocationManager
 import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.model.LastWeather
@@ -8,8 +9,16 @@ import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.db.LocalSourceInterface
 import com.example.weatherapp.data.source.network.RemoteWeatherSource
+import com.example.weatherapp.helper.WeatherAlertWorker
+import com.example.weatherapp.helper.WeatherAlertWorker.Companion.ALERT_TYPE_WORKER_DATA
+import com.example.weatherapp.helper.WeatherAlertWorker.Companion.CURRENT_WEATHER_WORKER_DATA
+import com.example.weatherapp.helper.WeatherAlertWorker.Companion.END_TIME_WORKER_DATA
+import com.example.weatherapp.helper.WeatherAlertWorker.Companion.START_TIME_WORKER_DATA
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import java.util.concurrent.TimeUnit
 
 class Repository private constructor(
     var remoteSource: RemoteWeatherSource,
@@ -46,6 +55,37 @@ class Repository private constructor(
         this.locationManager=locationManager
         this.settingsSharedPreferences=settingsSharedPreferences
     }
+
+
+
+    override suspend fun sendNotification(alert: Alerts, context: Context) {
+        var currentWeatherAlerts: Alerts? = null
+        if (getLastWeather().first().alerts.size!=0){
+            currentWeatherAlerts=getLastWeather().first().alerts[0]
+        }
+
+        val workManager = WorkManager.getInstance(context)
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val inputData = Data.Builder()
+            .putLong(START_TIME_WORKER_DATA, alert.start!!)
+            .putLong(END_TIME_WORKER_DATA, alert.end!!)
+            .putString(ALERT_TYPE_WORKER_DATA,alert.type)
+            .putString(CURRENT_WEATHER_WORKER_DATA, Gson().toJson(currentWeatherAlerts))
+            .build()
+
+        val delay = alert.start!! - System.currentTimeMillis() / 1000 // calculate time until end date
+        val notificationRequest = PeriodicWorkRequestBuilder<WeatherAlertWorker>(1, TimeUnit.DAYS)
+            .setConstraints(constraints)
+            .setInputData(inputData)
+            .setInitialDelay(delay, TimeUnit.SECONDS) // schedule worker until end date
+            .build()
+
+        workManager.enqueue(notificationRequest)
+    }
+
 
 
 

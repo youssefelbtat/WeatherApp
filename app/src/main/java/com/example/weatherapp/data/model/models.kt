@@ -18,7 +18,8 @@ data class RootWeatherModel(
     @SerializedName("timezone_offset") var timezoneOffset: Int? = null,
     @SerializedName("current") var current: Current? = Current(),
     @SerializedName("hourly") var hourly: ArrayList<Hourly> = arrayListOf(),
-    @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf()
+    @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf(),
+    @SerializedName("alerts") var alerts: ArrayList<Alerts> = arrayListOf()
 
 ): Serializable
 @Entity(tableName = "last_weather_table")
@@ -31,7 +32,8 @@ data class LastWeather(
     @SerializedName("timezone_offset") var timezoneOffset: Int? = null,
     @SerializedName("current") var current: Current? = Current(),
     @SerializedName("hourly") var hourly: ArrayList<Hourly> = arrayListOf(),
-    @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf()
+    @SerializedName("daily") var daily: ArrayList<Daily> = arrayListOf(),
+    @SerializedName("alerts") var alerts: ArrayList<Alerts> = arrayListOf()
 ):Serializable
 @Entity(tableName = "alerts_table")
 data class Alerts(

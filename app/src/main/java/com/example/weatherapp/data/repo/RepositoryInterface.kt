@@ -1,5 +1,6 @@
 package com.example.weatherapp.data.repo
 
+import android.content.Context
 import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
@@ -28,6 +29,8 @@ interface RepositoryInterface {
     suspend fun removeAlert(alert: Alerts)
 
     fun getLanguageFromShdPref(): String
+
+    suspend fun sendNotification(alert:  Alerts,context: Context)
 
     suspend fun getLocationGPS():Pair<Double,Double>
     suspend fun getLocationMap():Pair<Double,Double>

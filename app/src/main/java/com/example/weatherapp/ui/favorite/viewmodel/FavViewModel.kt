@@ -53,7 +53,8 @@ class FavViewModel(
     }
 
     suspend fun getWeather(lat:Double, lon:Double): Flow<RootWeatherModel> {
-        return _irepo.getRootWeatherFromAPI(lat, lon, units = "metric")
+        val lang=_irepo.getLanguageFromShdPref()
+        return _irepo.getRootWeatherFromAPI(lat, lon, units = "metric", lang = lang)
     }
 
 }

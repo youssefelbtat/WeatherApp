@@ -10,7 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="102dp"
+        android:padding="4dp"
         android:background="@drawable/background">
 
         <TextView
@@ -20,6 +21,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
             android:text="@string/from"
+            android:textColor="@color/dark_blue"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,8 +31,9 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="144dp"
+            android:layout_marginStart="180dp"
             android:text="@string/to"
+            android:textColor="@color/dark_blue"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
@@ -40,35 +43,77 @@
 
         <ImageView
             android:id="@+id/imgv_delete_alet_item"
-            android:layout_width="90dp"
-            android:layout_height="59dp"
+            android:layout_width="53dp"
+            android:layout_height="62dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="11dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/delete_removebg" />
 
         <TextView
-            android:id="@+id/tv_start_alert_item"
+            android:id="@+id/tv_start_alert_time_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="11dp"
+            android:layout_marginTop="4dp"
             android:text="3:12 AM"
+            android:textColor="#000000"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
-            app:layout_constraintStart_toStartOf="@+id/textView3" />
+            app:layout_constraintHorizontal_bias="0.421"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
-            android:id="@+id/tv_end_alert_item"
+            android:id="@+id/tv_end_alert_time_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="11dp"
             android:text="3:16 AM"
+            android:textColor="#000000"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_start_alert_time_item"
             app:layout_constraintEnd_toEndOf="@+id/textView4"
-            app:layout_constraintStart_toStartOf="@+id/textView4" />
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <ImageView
+            android:id="@+id/imv_alert_type"
+            android:layout_width="85dp"
+            android:layout_height="69dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_end_alert_time_item"
+            app:layout_constraintStart_toEndOf="@+id/tv_start_alert_time_item"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/alarm_notif" />
+
+        <TextView
+            android:id="@+id/tv_alert_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="11dp"
+            android:text="01/04/2023"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_start_alert_time_item"
+            app:layout_constraintHorizontal_bias="0.222"
+            app:layout_constraintStart_toStartOf="@+id/tv_start_alert_time_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_start_alert_time_item"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tv_alert_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/04/2023"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_alert_start_date"
+            app:layout_constraintEnd_toEndOf="@+id/tv_end_alert_time_item"
+            app:layout_constraintStart_toStartOf="@+id/tv_end_alert_time_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_start_alert_time_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

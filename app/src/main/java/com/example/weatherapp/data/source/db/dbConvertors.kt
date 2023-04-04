@@ -1,6 +1,7 @@
 package com.example.weatherapp.data.source.db
 
 import androidx.room.TypeConverter
+import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.model.Current
 import com.example.weatherapp.data.model.Daily
 import com.example.weatherapp.data.model.Hourly
@@ -16,6 +17,21 @@ class DailyTypeConverter {
 
     @TypeConverter
     fun fromArrayList(list: ArrayList<Daily>): String {
+        val gson = Gson()
+        return gson.toJson(list)
+    }
+}
+
+
+class AlertsTypeConvertor{
+    @TypeConverter
+    fun fromString(value: String): ArrayList<Alerts> {
+        val listType = object : TypeToken<ArrayList<Alerts>>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromArrayList(list: ArrayList<Alerts>): String {
         val gson = Gson()
         return gson.toJson(list)
     }

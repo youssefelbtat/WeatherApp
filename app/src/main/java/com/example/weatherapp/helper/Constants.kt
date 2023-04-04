@@ -11,7 +11,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.weatherapp.R
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 object Constants {
     const val Celsius = "\u2103"
@@ -30,16 +32,29 @@ object Constants {
     const val SH_PRF_UNIT_KEY = "unit"
     const val SH_PRF_LOCATION_KEY = "unit"
 
+
     fun getCityNameByLatAndLon(context: Context, latitude: Double?, longitude: Double?): String? {
-        val geocoder = Geocoder(context)
+        val lan = SettingsSharedPreferences.getInstance(context).getShPrefLanguage()
+        val geocoder = Geocoder(context, Locale(lan))
         val addressList = geocoder.getFromLocation(latitude!!, longitude!!, 1)
-        return if (addressList?.firstOrNull()?.subAdminArea != null)
-            addressList?.firstOrNull()?.subAdminArea
+        val cityName = if (addressList?.firstOrNull()?.subAdminArea != null)
+            addressList.firstOrNull()?.subAdminArea
         else if (addressList?.firstOrNull()?.adminArea != null)
-            addressList?.firstOrNull()?.adminArea
+            addressList.firstOrNull()?.adminArea
         else
             addressList?.firstOrNull()?.countryName
+
+        return if (lan == Language.ARABIC.value && !cityName.isNullOrEmpty() && cityName.isEnglish()) {
+            addressList?.firstOrNull()?.countryName
+        } else {
+            cityName
+        }
     }
+
+    fun String.isEnglish(): Boolean {
+        return this.matches(Regex("[a-zA-Z\\s]+"))
+    }
+
 
 
     fun showToast(context: Context,message:String){

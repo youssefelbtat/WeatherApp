@@ -9,7 +9,6 @@ import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.source.db.WeatherDao
 import com.example.weatherapp.data.source.db.WeatherDatabase
-import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -37,7 +36,7 @@ class WeatherDaoTest {
     private lateinit var dao: WeatherDao
 
     @Before
-    fun createDB() {
+    fun setUp() {
         db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             WeatherDatabase::class.java

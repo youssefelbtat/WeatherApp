@@ -29,7 +29,7 @@
     <string name="notifications">الاشعارات</string>
     <string name="temperature">درجة الحرارة</string>
     <string name="from">من</string>
-    <string name="to">إالي</string>
+    <string name="to">إلي</string>
     <string name="title_activity_maps">الخريطة</string>
     <string name="save">حفظ</string>
     <string name="Search">بحث</string>
@@ -45,4 +45,10 @@
     <string name="are_you_sure_you_want_to_delete_this_item">هل انت متأكد انك تريد الحذف؟</string>
     <string name="feels_like">تشعر وكانها</string>
     <string name="wind_speed">سرعة الرياح</string>
+    <string name="set_alerm">اضافة تنبيه</string>
+    <string name="there_is_no_weather_alerts">لا يوجد مخاطر مناخية</string>
+    <string name="dismiss">حسنا</string>
+    <string name="weather_alarm">تنبية مناخي</string>
+    <string name="no_weather_alerts">الطقس جيد</string>
+
 </resources>

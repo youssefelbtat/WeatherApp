@@ -30,6 +30,7 @@ class FavAdapter(var deleteItem: (RootWeatherModel) -> Unit,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.city.text = Constants.getCityNameByLatAndLon(holder.city.context,getItem(position).lat,getItem(position).lon)
+        println("The city name is : ${Constants.getCityNameByLatAndLon(holder.city.context,getItem(position).lat,getItem(position).lon)}")
         holder.delete.setOnClickListener {
             deleteItem(getItem(position))
         }

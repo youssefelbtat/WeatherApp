@@ -56,6 +56,8 @@ class SettingsFragment : Fragment() {
                     sharedPreferences.setShPrefLanguage(Language.ENGLISH)
                 }
             }
+
+            requireActivity().recreate()
         }
 
         binding.rgUnit.setOnCheckedChangeListener { _, checkedId ->

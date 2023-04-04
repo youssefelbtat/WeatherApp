@@ -1,6 +1,7 @@
 package com.example.weatherapp.helper
 
 import com.example.weatherapp.R
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.ZoneId
@@ -12,9 +13,15 @@ object Convertor{
         return dateFormat.format(Date(dt?.times(1000) ?: 0))
     }
     fun convertDtToDate(dt: Long?): String{
+
         val sdf = SimpleDateFormat("E, dd MMM HH:mm", Locale.getDefault())
         val date = Date(dt?.times(1000) ?: 0)
        return sdf.format(date)
+    }
+    fun convertDtToNumberDate(dt: Long?): String{
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val date = Date(dt?.times(1000) ?: 0)
+        return sdf.format(date)
     }
     fun convertDtToTime(dt: Long?): String {
         val sdf = SimpleDateFormat("h:mma", Locale.getDefault())

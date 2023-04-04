@@ -37,7 +37,8 @@ class HomeFragmentViewModel(
                             current = it.current,
                             daily = it.daily,
                             hourly = it.hourly,
-                            timezoneOffset = it.timezoneOffset
+                            timezoneOffset = it.timezoneOffset,
+                            alerts = it.alerts
                         )
                     )
 
@@ -53,7 +54,8 @@ class HomeFragmentViewModel(
                     current = lastWeather.current,
                     daily = lastWeather.daily,
                     hourly = lastWeather.hourly,
-                    timezoneOffset = lastWeather.timezoneOffset
+                    timezoneOffset = lastWeather.timezoneOffset,
+                    alerts = lastWeather.alerts
                 ))
             } else {
                 _apiState.value = APIState.Failure(e)
