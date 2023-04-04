@@ -64,35 +64,9 @@ class AlertViewModel(
 
     }
 
-/*
-    suspend fun schudAlert(){
-         val workManager = WorkManager.getInstance(context)
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val inputData = Data.Builder()
-            .putLong("start", _repo.getAllAlerts().first().get(0).start!!)
-            .putLong("end", _repo.getAllAlerts().first().get(0).end!!)
-            .build()
-
-        val workRequest = PeriodicWorkRequestBuilder<WeatherAlertWorker>(
-            1, TimeUnit.HOURS,
-            flexTimeInterval = 10, TimeUnit.MINUTES
-        )
-            .setConstraints(constraints)
-            .setInputData(inputData)
-            .build()
-
-        workManager.enqueue(workRequest)
-    }
-*/
-
 
 }
-/*val WeaterWorkRequest = OneTimeWorkRequest.Builder(WeatherAlertWorker::class.java)
-            .setConstraints(constraints)
-            .build()*/
+
 class AlertViewModelFactory(private val _irepo: RepositoryInterface) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(AlertViewModel::class.java)) {

@@ -6,13 +6,9 @@ import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.repo.FakeRepository
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.ui.favorite.viewmodel.FavViewModel
-import junit.framework.TestCase
 import junit.framework.TestCase.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.pauseDispatcher
-import kotlinx.coroutines.test.resumeDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
@@ -40,7 +36,7 @@ class FavViewModelTest {
     }
 
     @Test
-    fun testRemoveFavWeather_WeatherModel_WeatherIsNotExistingInTheList() = runBlockingTest {
+    fun removeFavWeatherTest_WeatherModel_WeatherIsNotExistingInTheList() = runBlockingTest {
         // given
         val weather1 = RootWeatherModel(id = 105)
         val weather2 = RootWeatherModel(id = 105)
@@ -61,7 +57,7 @@ class FavViewModelTest {
     }
 
     @Test
-    fun testAddFavWeather_WeatherModel_WeatherIsExistingInTheList() = runBlockingTest {
+    fun addFavWeatherTest_WeatherModel_WeatherIsExistingInTheList() = runBlockingTest {
         // given
         val weather1 = RootWeatherModel(id = 11)
         val weather2 = RootWeatherModel(id = 12)
@@ -82,7 +78,7 @@ class FavViewModelTest {
     }
 
     @Test
-    fun testGetFavWeathersOnSuccess_returnAllTheFavWeathers() = runBlockingTest {
+    fun getFavWeathersOnSuccessTest_returnAllTheFavWeathers() = runBlockingTest {
         // given
         val weather1 = RootWeatherModel(id = 11)
         val weather2 = RootWeatherModel(id = 12)
@@ -94,7 +90,6 @@ class FavViewModelTest {
         when (val favorites = viewModel.apiState.value)  {
                 is APIState.Success -> {
                     // Ensure that all favorite weather items are returned
-                    val favWeathers = favorites.data
                     assertEquals(true,favorites.data.contains(weather1))
                     assertEquals(true,favorites.data.contains(weather2))
                 }
@@ -105,15 +100,14 @@ class FavViewModelTest {
         }
 
     @Test
-    fun testGetFavWeathersOnEmpty_returnEmptyList() = runBlockingTest {
+    fun getFavWeathersOnEmptyTest_returnEmptyList() = runBlockingTest {
         //when
-        fakeRepo.clearALlList()
+        fakeRepo.clearALlFavList()
         delay(100)
         //then
 
-        when (val favorites = viewModel.apiState.value)  {
+        when ( viewModel.apiState.value)  {
             is APIState.Empty -> {
-                // Ensure that all favorite weather items are returned
                 assertEquals(0,fakeRepo.getAllFavorites().first().size)
             }
             else -> {

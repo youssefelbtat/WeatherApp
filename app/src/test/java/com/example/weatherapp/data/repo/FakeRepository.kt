@@ -1,5 +1,6 @@
 package com.example.weatherapp.data.repo
 
+import android.content.Context
 import com.example.weatherapp.data.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -38,8 +39,11 @@ class FakeRepository : RepositoryInterface {
         return flowOf(lastWeather ?: LastWeather())
     }
 
-    fun clearALlList(){
+    fun clearALlFavList(){
         favorites.clear()
+    }
+    fun clearALlAlertsList(){
+        alerts.clear()
     }
 
     override fun getAllAlerts(): Flow<List<Alerts>> {
@@ -48,6 +52,10 @@ class FakeRepository : RepositoryInterface {
 
     override fun getLanguageFromShdPref(): String {
         return "en"
+    }
+
+    override suspend fun sendNotification(alert: Alerts, context: Context) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun getLocationGPS(): Pair<Double, Double> {

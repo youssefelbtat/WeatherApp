@@ -37,25 +37,9 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun testApiStateAfterInitialization() = runBlockingTest {
+    fun apiStateInitializationTest_returnAPIState() = runBlockingTest {
             val apiState = viewModel.apiState.first()
             assert(apiState is APIState.Loading || apiState is APIState.Success)
         }
 
-/*    @Test
-    fun getCurrentWeatherTest_returnWeatherModel() = runBlockingTest {
-        fakeRepo.setLocationGPS(Pair(30.30,31.30))
-        val currentWeather = viewModel.apiState.value
-        println("currentWeather: $currentWeather")
-        when (currentWeather) {
-            is APIState.Success -> {
-                assertEquals(31.30,currentWeather.data.lon)
-            }
-            else -> {
-            }
-        }
-    }*/
-
-
-    //Complete the class to test HomeViewModel
 }

@@ -6,11 +6,15 @@ import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
 import kotlinx.coroutines.flow.Flow
 
-class ConcreteLocalSource(context:Context) : LocalSourceInterface{
+class ConcreteLocalSource private constructor(private val dao: WeatherDao) : LocalSourceInterface {
 
-    private val dao: WeatherDao by lazy {
-        val db: WeatherDatabase= WeatherDatabase.getInstance(context)
-        db.weatherDao()
+    companion object {
+        @Volatile private var INSTANCE: ConcreteLocalSource? = null
+        fun getInstance(dao: WeatherDao): ConcreteLocalSource {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ConcreteLocalSource(dao).also { INSTANCE = it }
+            }
+        }
     }
 
     override suspend fun getAllFavorites(): Flow<List<RootWeatherModel>> {

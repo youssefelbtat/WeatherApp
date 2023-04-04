@@ -16,6 +16,7 @@ import com.example.weatherapp.data.location.LocationManager
 import com.example.weatherapp.data.repo.Repository
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.db.ConcreteLocalSource
+import com.example.weatherapp.data.source.db.WeatherDatabase
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
 import com.example.weatherapp.databinding.FragmentFavBinding
@@ -61,7 +62,7 @@ class FavFragment : Fragment() {
         favFragmentViewModelFactory = FavViewModelFactory(
             Repository.getInstance(
                 WeatherApiClient.getInstance(),
-                ConcreteLocalSource(view.context),
+                ConcreteLocalSource.getInstance(WeatherDatabase.getInstance(requireContext()).weatherDao()),
                 LocationManager(view.context),
                 SettingsSharedPreferences.getInstance(view.context)
             )

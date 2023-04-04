@@ -17,6 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -30,23 +31,33 @@ import org.junit.runner.RunWith
 class LocalDataSourceTest {
 
 
-    private lateinit var localSource: ConcreteLocalSource
     @get:Rule
     val rule= InstantTaskExecutorRule()
 
     @get:Rule
     val main =MyMainRule()
 
+    private lateinit var localSource: ConcreteLocalSource
+    private lateinit var db:WeatherDatabase
+
+
     @Before
     fun setUp() {
-        localSource = ConcreteLocalSource(ApplicationProvider.getApplicationContext())
+        db=Room.inMemoryDatabaseBuilder(
+            ApplicationProvider.getApplicationContext(),
+            WeatherDatabase::class.java
+        ).allowMainThreadQueries().build()
+
+        localSource = ConcreteLocalSource.getInstance(db.weatherDao())
+    }
+    @After
+    fun downTear(){
+        db.close()
     }
 
 
-    //complete the class
-
     @Test
-    fun insertAndGetAllAlertsTest() = runBlockingTest {
+    fun insertAndGetAllAlertsTest_oneOrMoreAlert_IncreaseTheSizeAllAlerts() = runBlockingTest {
         // Given
         val alert1 = Alerts(1)
         val alert2 = Alerts(2)
@@ -55,13 +66,40 @@ class LocalDataSourceTest {
         // When
         localSource.insertAlert(alert1)
         localSource.insertAlert(alert2)
-        localSource.insertAlert(alert3)
 
-        val alerts = localSource.getAllAlerts().first()
         // Then
-        assertEquals(3,alerts.size)
+        assertEquals(2,localSource.getAllAlerts().first().size)
         assertEquals(1,alert1.id)
         assertEquals(2,alert2.id)
+        localSource.insertAlert(alert3)
+        localSource.insertAlert(alert4)
+        assertEquals(4,localSource.getAllAlerts().first().size)
+        assertEquals(3,alert3.id)
+        assertEquals(4,alert4.id)
+
+    }
+
+    @Test
+    fun insertAndGetAllFavTest_oneOrMoreWeatherModel_IncreaseTheSizeAllFavorites() = runBlockingTest {
+        // Given
+        val weather1 = RootWeatherModel(1)
+        val weather2 = RootWeatherModel(2)
+        val weather3 = RootWeatherModel(3)
+        val weather4 = RootWeatherModel(4)
+
+        // When
+        localSource.insertFavorite(weather1)
+        localSource.insertFavorite(weather2)
+
+        // Then
+        assertEquals(2,localSource.getAllFavorites().first().size)
+        assertEquals(1,weather1.id)
+        assertEquals(2,weather2.id)
+        localSource.insertFavorite(weather3)
+        localSource.insertFavorite(weather4)
+        assertEquals(4,localSource.getAllFavorites().first().size)
+        assertEquals(3,weather3.id)
+        assertEquals(4,weather4.id)
 
     }
 
@@ -75,6 +113,18 @@ class LocalDataSourceTest {
         localSource.removeFavorite(favorite)
         // Then
         assertEquals(0,localSource.getAllFavorites().first().size)
+    }
+
+    @Test
+    fun removeAlertTest_WeatherModel_ModelNotExistingInAllAlerts() = runBlockingTest {
+        // Given
+        val alert = Alerts(id = 15)
+        localSource.insertAlert(alert)
+        assertEquals(1,localSource.getAllFavorites().first().size)
+        // When
+        localSource.removeAlert(alert)
+        // Then
+        assertEquals(0,localSource.getAllAlerts().first().size)
     }
 
     @Test
@@ -94,89 +144,15 @@ class LocalDataSourceTest {
     @Test
     fun updateLastWeatherTest_WeatherModel_ChangeLastWeather() = runBlockingTest {
         // Given
-        val lastWeather = LastWeather(12, 10.0, 12.30)
-        localSource.updateLastWeather(lastWeather)
-        // When
-        val newLastWeather = LastWeather(13, 20.0, 25.60)
+        val newLastWeather = LastWeather(lat = 15.50, lon = 6.23)
         localSource.updateLastWeather(newLastWeather)
+        localSource.updateLastWeather(LastWeather(lat = 30.65, lon = 66.30))
+
+        // When
         val result = localSource.getLastWeather().first()
         // Then
-        assertEquals(13,result.id)
-        assertEquals(20.0,result.lat)
-        assertEquals(25.60,result.lon)
+        assertEquals(30.65,result.lat)
+        assertEquals(66.30,result.lon)
     }
 
 }
-
-
-/*
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-
-class ConcreteLocalSourceTest {
-
-    private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val localSource = ConcreteLocalSource(context)
-
-    @Test
-    fun insertFavoriteTest() = runBlocking {
-        // Given
-        val favorite = RootWeatherModel(id = 225)
-
-        // When
-        localSource.insertFavorite(favorite)
-
-        // Then
-        val favorites = localSource.getAllFavorites().first()
-        assertEquals(1, favorites.size)
-        assertEquals(favorite, favorites[0])
-    }
-
-    @Test
-    fun removeFavoriteTest() = runBlocking {
-        // Given
-        val favorite = RootWeatherModel(id = 225)
-        localSource.insertFavorite(favorite)
-
-        // When
-        localSource.removeFavorite(favorite)
-
-        // Then
-        val favorites = localSource.getAllFavorites().first()
-        assertEquals(0, favorites.size)
-    }
-
-    @Test
-    fun updateLastWeatherTest() = runBlocking {
-        // Given
-        val lastWeather = LastWeather(cityName = "New York", temperature = 20.5)
-
-        // When
-        localSource.updateLastWeather(lastWeather)
-
-        // Then
-        val result = localSource.getLastWeather().first()
-        assertEquals(lastWeather, result)
-    }
-
-    @Test
-    fun insertAndGetAllAlertsTest() = runBlocking {
-        // Given
-        val alerts = listOf(
-            Alerts("Alert 1", "This is alert 1"),
-            Alerts("Alert 2", "This is alert 2")
-        )
-
-        // When
-        alerts.forEach { localSource.insertAlert(it) }
-
-        // Then
-        val result = localSource.getAllAlerts().first()
-        assertEquals(alerts, result)
-    }
-
-}
-*/

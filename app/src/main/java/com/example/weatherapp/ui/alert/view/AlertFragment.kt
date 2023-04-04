@@ -27,6 +27,7 @@ import com.example.weatherapp.data.model.Alerts
 import com.example.weatherapp.data.repo.Repository
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.db.ConcreteLocalSource
+import com.example.weatherapp.data.source.db.WeatherDatabase
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
 import com.example.weatherapp.databinding.FragmentAlertBinding
@@ -47,7 +48,7 @@ class AlertFragment : Fragment() {
     private lateinit var alertFragmentViewModelFactory: AlertViewModelFactory
     private lateinit var viewModel: AlertViewModel
     private lateinit var alertRecyclerAdapter: AlertAdapter
-    private val REQUEST_CODE_SYSTEM_ALERT_WINDOW_PERMISSION = 100
+    private  val REQUEST_CODE_SYSTEM_ALERT_WINDOW_PERMISSION = 100
 
 
     override fun onCreateView(
@@ -63,7 +64,7 @@ class AlertFragment : Fragment() {
         alertFragmentViewModelFactory = AlertViewModelFactory(
             Repository.getInstance(
                 WeatherApiClient.getInstance(),
-                ConcreteLocalSource(view.context),
+                ConcreteLocalSource.getInstance(WeatherDatabase.getInstance(requireContext()).weatherDao()),
                 LocationManager(view.context),
                 SettingsSharedPreferences.getInstance(view.context)
             )

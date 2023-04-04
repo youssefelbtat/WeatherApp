@@ -86,9 +86,6 @@ class Repository private constructor(
         workManager.enqueue(notificationRequest)
     }
 
-
-
-
     override suspend fun getRootWeatherFromAPI(
         latitude: Double,
         longitude: Double,
