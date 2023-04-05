@@ -1,11 +1,17 @@
 package com.example.weatherapp.ui.home.view
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +29,7 @@ import com.example.weatherapp.data.source.db.WeatherDao
 import com.example.weatherapp.data.source.db.WeatherDatabase
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
+import com.example.weatherapp.helper.Constants.LOCATION_PERMISSION_ID
 import com.example.weatherapp.helper.Constants.isInternetConnected
 import com.example.weatherapp.helper.addTemperature
 import com.example.weatherapp.helper.addWindSpeedInMile
@@ -39,6 +46,7 @@ class HomeFragment : Fragment() {
     private lateinit var hourlyRecyclerAdapter: HourlyWeatherAdabter
     private lateinit var dailyRecyclerAdapter: DailyWeatherAdabter
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,10 +56,33 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        println("PERMISSION out if")
+        if (requestCode == LOCATION_PERMISSION_ID) {
+            println("PERMISSION first if")
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                println("PERMISSION allowed")
+                lifecycleScope.launchWhenCreated {
+                    showLoading()
+                    requireActivity().recreate()
+                }
+
+            } else {
+                println("PERMISSION does not allowed")
+                showAllowLocationGroup()
+                Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         init()
         setUpRecyclerViews()
@@ -92,47 +123,104 @@ class HomeFragment : Fragment() {
                 homeFragmentViewModelFactory
             )[HomeFragmentViewModel::class.java]
 
-            lifecycleScope.launchWhenCreated {
-                viewModel.apiState.collectLatest { result ->
-                    when (result) {
-                        is APIState.Loading -> showLoading()
-                        is APIState.Success -> {
-                            binding.homeProgressBar.visibility = View.GONE
-                            binding.homeGroup.visibility = View.VISIBLE
-                            binding.tvCity.text = Constants.getCityNameByLatAndLon(
-                                view.context,
-                                result.data.lat,
-                                result.data.lon
-                            )
 
-                            binding.tvDegree.addTemperature(result.data.current?.temp!!, requireContext())
-                            binding.tvFdegree.addTemperature(result.data.current?.feelsLike!!, requireContext())
-                            binding.tvDescription.text =
-                                result.data.current?.weather?.get(0)?.description ?: ""
-                            binding.tvDate.text = Convertor.convertDtToDate(requireContext(),result.data.current?.dt)
-                            binding.tvWindSpeed.addWindSpeedInMile(result.data.current?.windSpeed!!,requireContext())
-                            binding.humidity.text = result.data.current?.humidity.toString() + "%"
-                            binding.tvPressure.text = result.data.current?.pressure.toString() + "hpa"
-                            binding.tvVisibility.text = result.data.current?.visibility.toString() + "m"
-                            binding.tvCloud.text = result.data.current?.clouds.toString() + "m"
-                            binding.tvUltra.text = result.data.current?.uvi.toString() + "%"
-                            binding.imvMainicon.setImageResource(
-                                Convertor.convertIconToDrawableImage(
-                                    result.data.current?.weather?.get(0)?.icon
+            if (!LocationManager.checkLocationPermissions(requireContext())) {
+
+                showAllowLocationGroup()
+
+                // Set click listener for "Enable Location" button
+                binding.btnAllowLocation.setOnClickListener {
+                    // Request location permission
+                    requestPermissions(
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        LOCATION_PERMISSION_ID)
+                }
+            }
+            else{
+                println("Location is allowed >>><")
+                lifecycleScope.launchWhenCreated {
+                    viewModel.apiState.collectLatest { result ->
+                        when (result) {
+                            is APIState.Loading -> showLoading()
+                            is APIState.Success -> {
+                                showHomeGroup()
+                                binding.tvCity.text = Constants.getCityNameByLatAndLon(
+                                    requireContext(),
+                                    result.data.lat,
+                                    result.data.lon
                                 )
-                            )
-                            dailyRecyclerAdapter.submitList(result.data.daily)
-                            hourlyRecyclerAdapter.submitList(result.data.hourly)
 
-                        }
-                        else -> {
-                            binding.homeProgressBar.visibility = View.GONE
+                                binding.tvDegree.addTemperature(result.data.current?.temp!!, requireContext())
+                                binding.tvFdegree.addTemperature(result.data.current?.feelsLike!!, requireContext())
+                                binding.tvDescription.text =
+                                    result.data.current?.weather?.get(0)?.description ?: ""
+                                binding.tvDate.text = Convertor.convertDtToDate(requireContext(),result.data.current?.dt)
+                                binding.tvWindSpeed.addWindSpeedInMile(result.data.current?.windSpeed!!,requireContext())
+                                binding.humidity.text = result.data.current?.humidity.toString() + "%"
+                                binding.tvPressure.text = result.data.current?.pressure.toString() + "hpa"
+                                binding.tvVisibility.text = result.data.current?.visibility.toString() + "m"
+                                binding.tvCloud.text = result.data.current?.clouds.toString() + "m"
+                                binding.tvUltra.text = result.data.current?.uvi.toString() + "%"
+                                binding.imvMainicon.setImageResource(
+                                    Convertor.convertIconToDrawableImage(
+                                        result.data.current?.weather?.get(0)?.icon
+                                    )
+                                )
+                                dailyRecyclerAdapter.submitList(result.data.daily)
+                                hourlyRecyclerAdapter.submitList(result.data.hourly)
 
+                            }
+                            else -> {
+                                binding.homeProgressBar.visibility = View.GONE
 
+                            }
                         }
                     }
                 }
             }
+            /*else{
+                lifecycleScope.launchWhenCreated {
+                    viewModel.apiState.collectLatest { result ->
+                        when (result) {
+                            is APIState.Loading -> showLoading()
+                            is APIState.Success -> {
+                                showHomeGroup()
+                                binding.tvCity.text = Constants.getCityNameByLatAndLon(
+                                    view.context,
+                                    result.data.lat,
+                                    result.data.lon
+                                )
+
+                                binding.tvDegree.addTemperature(result.data.current?.temp!!, requireContext())
+                                binding.tvFdegree.addTemperature(result.data.current?.feelsLike!!, requireContext())
+                                binding.tvDescription.text =
+                                    result.data.current?.weather?.get(0)?.description ?: ""
+                                binding.tvDate.text = Convertor.convertDtToDate(requireContext(),result.data.current?.dt)
+                                binding.tvWindSpeed.addWindSpeedInMile(result.data.current?.windSpeed!!,requireContext())
+                                binding.humidity.text = result.data.current?.humidity.toString() + "%"
+                                binding.tvPressure.text = result.data.current?.pressure.toString() + "hpa"
+                                binding.tvVisibility.text = result.data.current?.visibility.toString() + "m"
+                                binding.tvCloud.text = result.data.current?.clouds.toString() + "m"
+                                binding.tvUltra.text = result.data.current?.uvi.toString() + "%"
+                                binding.imvMainicon.setImageResource(
+                                    Convertor.convertIconToDrawableImage(
+                                        result.data.current?.weather?.get(0)?.icon
+                                    )
+                                )
+                                dailyRecyclerAdapter.submitList(result.data.daily)
+                                hourlyRecyclerAdapter.submitList(result.data.hourly)
+
+                            }
+                            else -> {
+                                binding.homeProgressBar.visibility = View.GONE
+
+                            }
+                        }
+                    }
+                }
+            }*/
+
+
         }
 
 
@@ -163,6 +251,17 @@ class HomeFragment : Fragment() {
     private fun showLoading() {
         binding.homeProgressBar.visibility = View.VISIBLE
         binding.homeGroup.visibility = View.GONE
+        binding.allowLocationGroup.visibility=View.GONE
+    }
+    private fun showHomeGroup(){
+        binding.homeProgressBar.visibility = View.GONE
+        binding.allowLocationGroup.visibility=View.GONE
+        binding.homeGroup.visibility = View.VISIBLE
+    }
+    private fun showAllowLocationGroup(){
+        binding.allowLocationGroup.visibility=View.VISIBLE
+        binding.homeGroup.visibility = View.GONE
+        binding.homeProgressBar.visibility = View.GONE
     }
 
 }

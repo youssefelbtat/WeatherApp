@@ -20,8 +20,6 @@ class LocationManager(private val context: Context) {
     @SuppressLint("MissingPermission")
     suspend fun getLocation(): Pair<Double, Double> {
         val resultDeferred = CompletableDeferred<Pair<Double, Double>>()
-
-        if (checkPermissions()) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     val lat = location.latitude
@@ -35,15 +33,13 @@ class LocationManager(private val context: Context) {
             }.addOnFailureListener { e: Exception ->
                 resultDeferred.completeExceptionally(e)
             }
-        } else {
-            requestPermissions()
-
-        }
 
         return resultDeferred.await()
     }
 
-          fun checkPermissions(): Boolean {
+
+    companion object{
+        fun checkLocationPermissions(context:Context): Boolean {
             return ActivityCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
@@ -52,15 +48,17 @@ class LocationManager(private val context: Context) {
 
         }
 
-    private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-            context as Activity,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            LOCATION_PERMISSION_ID
-        )
+        fun requestPermissions(context: Context) {
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                LOCATION_PERMISSION_ID
+            )
+        }
     }
+
 
 }

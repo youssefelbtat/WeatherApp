@@ -52,5 +52,6 @@
     <string name="no_weather_alerts">الطقس جيد</string>
     <string name="Meter">متر/الثانية</string>
     <string name="mile">ميل/الساعة</string>
-
+    <string name="please_allow_your_location_to_get_weather">من فضلك قم بتفعيل خاصية الموقع لمعرفة الطقس !</string>
+    <string name="allow">تفعيل</string>
 </resources>

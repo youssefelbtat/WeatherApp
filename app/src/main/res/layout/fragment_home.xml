@@ -12,10 +12,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/please_allow_your_location_to_get_weather"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView2"
+            app:layout_constraintHorizontal_bias="0.483"
+            app:layout_constraintStart_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <Button
+            android:id="@+id/btn_allow_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/allow"
+            app:layout_constraintEnd_toEndOf="@+id/textView8"
+            app:layout_constraintHorizontal_bias="0.513"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
         <androidx.constraintlayout.widget.Group
             android:id="@+id/homeGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:constraint_referenced_ids="tv_city,tv_date,cardView,rv_hourly_weather,cardView2,rv_daily_weather" />
 
         <TextView
@@ -24,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-medium"
-            android:text="London"
             android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold"
@@ -36,7 +59,6 @@
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fri, 26 Feb"
             android:textColor="@color/bg"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="@+id/tv_city"
@@ -82,7 +104,7 @@
                     android:layout_marginEnd="100dp"
                     android:layout_marginBottom="8dp"
                     android:gravity="center"
-                    android:text="Thunder storm"
+                    tools:text="Thunder storm"
                     android:textColor="@color/light_blue"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -96,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:text="29.1\u2103"
+                    tools:text="29.1\u2103"
                     android:textColor="@color/white"
                     android:textSize="52sp"
                     android:textStyle="bold"
@@ -124,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:text="31.1\u2103"
+                    tools:text="31.1\u2103"
                     android:textColor="@color/white"
                     android:textSize="26sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -303,7 +325,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="1000 m"
+                            tools:text="1000 m"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -337,7 +359,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="69 m"
+                            tools:text="69 m"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -370,7 +392,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="0.0 %"
+                            tools:text="0.0 %"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -411,6 +433,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="254dp"
+            android:layout_height="262dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/allow_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/allow_location_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="textView8,imageView2,btn_allow_location"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="49dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

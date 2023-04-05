@@ -51,4 +51,6 @@
     <string name="no_weather_alerts">No Weather Alerts</string>
     <string name="Meter">Meter/Sec</string>
     <string name="mile">Mile/Hour</string>
+    <string name="please_allow_your_location_to_get_weather">Please allow your location to get weather !</string>
+    <string name="allow">Allow</string>
 </resources>
