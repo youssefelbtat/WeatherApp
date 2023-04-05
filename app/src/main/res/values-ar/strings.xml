@@ -50,5 +50,7 @@
     <string name="dismiss">حسنا</string>
     <string name="weather_alarm">تنبية مناخي</string>
     <string name="no_weather_alerts">الطقس جيد</string>
+    <string name="Meter">متر/الثانية</string>
+    <string name="mile">ميل/الساعة</string>
 
 </resources>

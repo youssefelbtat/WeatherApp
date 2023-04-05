@@ -6,14 +6,14 @@ import android.content.res.Configuration
 import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.weatherapp.helper.*
 import com.example.weatherapp.helper.Constants.SH_PRF_LANG_KEY
+import com.example.weatherapp.helper.Constants.SH_PRF_LAT_KEY
 import com.example.weatherapp.helper.Constants.SH_PRF_LOCATION_KEY
+import com.example.weatherapp.helper.Constants.SH_PRF_LON_KEY
 import com.example.weatherapp.helper.Constants.SH_PRF_NOTIFICATION_KEY
+import com.example.weatherapp.helper.Constants.SH_PRF_SPEED_KEY
 import com.example.weatherapp.helper.Constants.SH_PRF_UNIT_KEY
-import com.example.weatherapp.helper.Language
-import com.example.weatherapp.helper.LocationEnum
-import com.example.weatherapp.helper.NotificationEnum
-import com.example.weatherapp.helper.Units
 import java.util.*
 
 object LocaleHelper {
@@ -72,5 +72,22 @@ object LocaleHelper {
     fun getShPrefLocation(): String? {
         return sharedPreferences.getString(SH_PRF_LOCATION_KEY, LocationEnum.GPS.name)
     }
+
+     fun setShPrefWindSpeed(speed: WindSpeedEnum) {
+         sharedPreferences.edit().putString(SH_PRF_SPEED_KEY, speed.name).apply()
+     }
+
+     fun getShPrefWindSpeed(): String? {
+         return sharedPreferences.getString(SH_PRF_SPEED_KEY, WindSpeedEnum.METER.name)
+     }
+
+     fun setShPrefLatAndLon(lat:Double,lon:Double) {
+         sharedPreferences.edit().putFloat(SH_PRF_LAT_KEY, lat.toFloat()).apply()
+         sharedPreferences.edit().putFloat(SH_PRF_LON_KEY, lon.toFloat()).apply()
+     }
+
+     fun getShPrefLatAndLon(): Pair<Double,Double>? {
+         return Pair(sharedPreferences.getFloat(SH_PRF_LAT_KEY, 0.0f).toDouble(),sharedPreferences.getFloat(SH_PRF_LON_KEY, 0.0f).toDouble())
+     }
 }
 

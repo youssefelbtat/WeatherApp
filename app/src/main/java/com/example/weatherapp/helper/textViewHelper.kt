@@ -2,6 +2,7 @@ package com.example.weatherapp.helper
 
 import android.content.Context
 import android.widget.TextView
+import com.example.weatherapp.R
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 
 fun TextView.addTemperature(tem: Double, context: Context) {
@@ -35,6 +36,26 @@ fun TextView.addTemperatureMaxAndMin(minTemp: Double, maxTemp: Double, context: 
 
     text = buildString {
         append("%.1f/%.1f".format(maxFormatted, minFormatted))
+        append(" ")
+        append(unit)
+    }
+}
+
+fun TextView.addWindSpeedInMile(windSpeed:Double,context: Context){
+    val unit :String
+    val preferences = SettingsSharedPreferences.getInstance(context)
+    val speed =when(preferences.getShPrefWindSpeed()){
+        WindSpeedEnum.METER.name->{
+            unit=resources.getString(R.string.Meter)
+            windSpeed*2.23694
+        }
+        else -> {
+            unit=resources.getString(R.string.mile)
+            windSpeed
+        }
+    }
+    text= buildString {
+        append("%.2f".format(speed))
         append(" ")
         append(unit)
     }

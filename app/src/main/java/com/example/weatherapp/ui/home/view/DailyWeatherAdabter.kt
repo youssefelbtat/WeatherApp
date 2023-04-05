@@ -31,7 +31,7 @@ class DailyWeatherAdabter() :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.day.text = Convertor.convertDtToDay(getItem(position).dt)
+        holder.day.text = Convertor.convertDtToDay(holder.day.context,getItem(position).dt)
         holder.des.text = getItem(position).weather[0].description
         holder.icon.setImageResource(Convertor.convertIconToDrawableImage(getItem(position).weather[0].icon))
         holder.temp.addTemperatureMaxAndMin(

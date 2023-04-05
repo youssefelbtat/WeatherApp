@@ -7,6 +7,7 @@ import com.example.weatherapp.data.model.LastWeather
 import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.repo.RepositoryInterface
 import com.example.weatherapp.data.source.network.APIState
+import com.example.weatherapp.helper.LocationEnum
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -24,9 +25,20 @@ class HomeFragmentViewModel(
 
     private fun getCurrentWeather() = viewModelScope.launch {
         try {
-            val (latitude, longitude) = _irepo.getLocationGPS()
-            val lang=_irepo.getLanguageFromShdPref()
-            _irepo.getRootWeatherFromAPI(latitude = latitude, longitude =longitude, units = "metric", lang = lang)
+
+            val (latitude, longitude) = when(_irepo.getLocationTypeShdPref()){
+                LocationEnum.GPS.name->_irepo.getLocationGPS()
+                else->{
+                    _irepo.getLocationMap()
+                }
+            }
+            val lang = _irepo.getLanguageFromShdPref()
+            _irepo.getRootWeatherFromAPI(
+                latitude = latitude,
+                longitude = longitude,
+                units = "metric",
+                lang = lang
+            )
                 .collect() {
                     _apiState.value = APIState.Success(it)
                     _irepo.updateLastWeather(
@@ -47,16 +59,18 @@ class HomeFragmentViewModel(
             val lastWeather = _irepo.getLastWeather().firstOrNull()
             if (lastWeather != null) {
                 _apiState.value = APIState.Loading
-                _apiState.value = APIState.Success(RootWeatherModel(
-                    lat = lastWeather.lat,
-                    lon = lastWeather.lon,
-                    timezone = lastWeather.timezone,
-                    current = lastWeather.current,
-                    daily = lastWeather.daily,
-                    hourly = lastWeather.hourly,
-                    timezoneOffset = lastWeather.timezoneOffset,
-                    alerts = lastWeather.alerts
-                ))
+                _apiState.value = APIState.Success(
+                    RootWeatherModel(
+                        lat = lastWeather.lat,
+                        lon = lastWeather.lon,
+                        timezone = lastWeather.timezone,
+                        current = lastWeather.current,
+                        daily = lastWeather.daily,
+                        hourly = lastWeather.hourly,
+                        timezoneOffset = lastWeather.timezoneOffset,
+                        alerts = lastWeather.alerts
+                    )
+                )
             } else {
                 _apiState.value = APIState.Failure(e)
             }

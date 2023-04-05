@@ -29,6 +29,7 @@ interface RepositoryInterface {
     suspend fun removeAlert(alert: Alerts)
 
     fun getLanguageFromShdPref(): String
+    fun getLocationTypeShdPref(): String
 
     suspend fun sendNotification(alert:  Alerts,context: Context)
 

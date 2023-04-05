@@ -1,5 +1,6 @@
 package com.example.weatherapp.helper
 
+import android.content.Context
 import com.example.weatherapp.R
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import java.text.DateFormat
@@ -8,23 +9,26 @@ import java.time.ZoneId
 import java.util.*
 
 object Convertor{
-    fun convertDtToDay(dt: Long?): String {
-        var dateFormat: DateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+    fun convertDtToDay(context:Context,dt: Long?): String {
+        val lan = SettingsSharedPreferences.getInstance(context).getShPrefLanguage()
+        var dateFormat: DateFormat = SimpleDateFormat("EEEE", Locale(lan))
         return dateFormat.format(Date(dt?.times(1000) ?: 0))
     }
-    fun convertDtToDate(dt: Long?): String{
-
-        val sdf = SimpleDateFormat("E, dd MMM HH:mm", Locale.getDefault())
+    fun convertDtToDate(context:Context,dt: Long?): String{
+        val lan = SettingsSharedPreferences.getInstance(context).getShPrefLanguage()
+        val sdf = SimpleDateFormat("E, dd MMM HH:mm", Locale(lan))
         val date = Date(dt?.times(1000) ?: 0)
        return sdf.format(date)
     }
-    fun convertDtToNumberDate(dt: Long?): String{
-        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    fun convertDtToNumberDate(context:Context,dt: Long?): String{
+        val lan = SettingsSharedPreferences.getInstance(context).getShPrefLanguage()
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale(lan))
         val date = Date(dt?.times(1000) ?: 0)
         return sdf.format(date)
     }
-    fun convertDtToTime(dt: Long?): String {
-        val sdf = SimpleDateFormat("h:mma", Locale.getDefault())
+    fun convertDtToTime(context:Context,dt: Long?): String {
+        val lan = SettingsSharedPreferences.getInstance(context).getShPrefLanguage()
+        val sdf = SimpleDateFormat("h:mma", Locale(lan))
         sdf.timeZone = TimeZone.getDefault()
         return sdf.format(dt?.times(1000) ?: 0)
     }

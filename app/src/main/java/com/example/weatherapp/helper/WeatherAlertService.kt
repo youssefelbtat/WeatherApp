@@ -12,6 +12,7 @@ import android.os.Looper
 import androidx.core.app.NotificationCompat
 import com.example.weatherapp.R
 import com.example.weatherapp.data.model.Alerts
+import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.ui.MainActivity
 import com.example.weatherapp.ui.alert.view.AlarmDialog
 import com.google.gson.Gson
@@ -24,8 +25,9 @@ class AlertBroadcastReceiver : BroadcastReceiver() {
         val alertJson = intent?.getStringExtra(WeatherAlertWorker.CURRENT_WEATHER_WORKER_DATA)
         val currentWeatherAlerts = Gson().fromJson(alertJson, Alerts::class.java)
         if (alertType == AlertType.NOTIFICATION.name) {
-            println("AlertBroadcastReceiver create NOTIFICATION")
-            createNotification(context, currentWeatherAlerts)
+            if (SettingsSharedPreferences.getInstance(context!!).getShPrefNotification()==NotificationEnum.ENABLE.name){
+                createNotification(context, currentWeatherAlerts)
+            }
         } else {
             println("AlertBroadcastReceiver create Alarm")
             createAlarm(context, currentWeatherAlerts)

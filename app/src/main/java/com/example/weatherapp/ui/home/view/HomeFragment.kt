@@ -1,5 +1,7 @@
 package com.example.weatherapp.ui.home.view
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +23,12 @@ import com.example.weatherapp.data.source.db.WeatherDao
 import com.example.weatherapp.data.source.db.WeatherDatabase
 import com.example.weatherapp.data.source.network.APIState
 import com.example.weatherapp.data.source.network.WeatherApiClient
+import com.example.weatherapp.helper.Constants.isInternetConnected
 import com.example.weatherapp.helper.addTemperature
+import com.example.weatherapp.helper.addWindSpeedInMile
 import com.example.weatherapp.ui.home.viewmodel.HomeFragmentViewModel
 import com.example.weatherapp.ui.home.viewmodel.HomeViewModelFactory
+import com.example.weatherapp.ui.map.MapsActivity
 import kotlinx.coroutines.flow.collectLatest
 
 class HomeFragment : Fragment() {
@@ -44,24 +49,22 @@ class HomeFragment : Fragment() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         init()
         setUpRecyclerViews()
         val weatherModel = arguments?.getSerializable("weather") as RootWeatherModel?
         if (weatherModel != null) {
-            binding.tvCity.text = Constants.getCityNameByLatAndLon(
-                view.context,
-                weatherModel.lat,
-                weatherModel.lon
-            )
+            binding.tvCity.text =weatherModel.timezone
 
             binding.tvDegree.addTemperature(weatherModel.current?.temp!!, requireContext())
             binding.tvFdegree.addTemperature(weatherModel.current?.feelsLike!!, requireContext())
             binding.tvDescription.text =
                 weatherModel.current?.weather?.get(0)?.description ?: ""
-            binding.tvDate.text = Convertor.convertDtToDate(weatherModel.current?.dt)
-            binding.tvWindSpeed.text = weatherModel.current?.windSpeed.toString() + "m/s"
+            binding.tvDate.text = Convertor.convertDtToDate(requireContext(),weatherModel.current?.dt)
+            binding.tvWindSpeed.addWindSpeedInMile(weatherModel.current?.windSpeed!!,requireContext())
             binding.humidity.text = weatherModel.current?.humidity.toString() + "%"
             binding.tvPressure.text = weatherModel.current?.pressure.toString() + "hpa"
             binding.tvVisibility.text = weatherModel.current?.visibility.toString() + "m"
@@ -87,7 +90,7 @@ class HomeFragment : Fragment() {
             viewModel = ViewModelProvider(
                 this,
                 homeFragmentViewModelFactory
-            ).get(HomeFragmentViewModel::class.java)
+            )[HomeFragmentViewModel::class.java]
 
             lifecycleScope.launchWhenCreated {
                 viewModel.apiState.collectLatest { result ->
@@ -106,8 +109,8 @@ class HomeFragment : Fragment() {
                             binding.tvFdegree.addTemperature(result.data.current?.feelsLike!!, requireContext())
                             binding.tvDescription.text =
                                 result.data.current?.weather?.get(0)?.description ?: ""
-                            binding.tvDate.text = Convertor.convertDtToDate(result.data.current?.dt)
-                            binding.tvWindSpeed.text = result.data.current?.windSpeed.toString() + "m/s"
+                            binding.tvDate.text = Convertor.convertDtToDate(requireContext(),result.data.current?.dt)
+                            binding.tvWindSpeed.addWindSpeedInMile(result.data.current?.windSpeed!!,requireContext())
                             binding.humidity.text = result.data.current?.humidity.toString() + "%"
                             binding.tvPressure.text = result.data.current?.pressure.toString() + "hpa"
                             binding.tvVisibility.text = result.data.current?.visibility.toString() + "m"

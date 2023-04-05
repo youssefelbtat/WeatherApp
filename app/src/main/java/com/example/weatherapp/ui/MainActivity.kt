@@ -13,6 +13,7 @@ import com.example.weatherapp.R
 import com.example.weatherapp.data.source.LocaleHelper
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.databinding.ActivityMainBinding
+import com.example.weatherapp.helper.Constants
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if (!Constants.isInternetConnected(this))
+            Constants.showSnackBar(binding.root, Constants.NO_INTERNET_MESSAGE)
 
         actionBar.apply {
             title = getString(R.string.home)

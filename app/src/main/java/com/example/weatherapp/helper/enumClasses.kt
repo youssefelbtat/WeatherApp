@@ -23,7 +23,14 @@ enum class LocationEnum {
 
 enum class AlertType{
         NOTIFICATION,
-        ALARM
+        ALARM,
 }
+
+enum class WindSpeedEnum{
+        METER,
+        MILE,
+}
+
+
 
 

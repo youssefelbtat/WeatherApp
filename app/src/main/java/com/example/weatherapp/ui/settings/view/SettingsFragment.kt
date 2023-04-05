@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.settings.view
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,15 +9,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
 import com.example.weatherapp.data.source.LocaleHelper
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.databinding.FragmentFavBinding
 import com.example.weatherapp.databinding.FragmentSettingsBinding
-import com.example.weatherapp.helper.Language
-import com.example.weatherapp.helper.LocationEnum
-import com.example.weatherapp.helper.NotificationEnum
-import com.example.weatherapp.helper.Units
+import com.example.weatherapp.helper.*
+import com.example.weatherapp.ui.map.MapsActivity
+import kotlinx.coroutines.launch
 
 
 class SettingsFragment : Fragment() {
@@ -28,6 +29,18 @@ class SettingsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedPreferences = SettingsSharedPreferences.getInstance(requireContext())
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.REQUEST_CODE_MAPS_ACTIVITY_TO_SETTINGS && resultCode == Activity.RESULT_OK) {
+            val latitude = data?.getDoubleExtra(Constants.EXTRA_LATITUDE, 0.0)
+            val longitude = data?.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0.0)
+            if (latitude != null && longitude != null) {
+                sharedPreferences.setShPrefLatAndLon(latitude,longitude)
+               println("The latitude is $latitude and $longitude")
+            }
+        }
     }
 
     override fun onCreateView(
@@ -44,6 +57,7 @@ class SettingsFragment : Fragment() {
         initUnitGroup()
         initNotificationGroup()
         initLocationGroup()
+        initSpeedGroup()
         binding.rgLang.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rb_arabic -> {
@@ -58,6 +72,18 @@ class SettingsFragment : Fragment() {
             }
 
             requireActivity().recreate()
+        }
+
+        binding.rgWindSpeed.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_meter -> {
+                    sharedPreferences.setShPrefWindSpeed(WindSpeedEnum.METER)
+                }
+
+                R.id.rb_mile -> {
+                    sharedPreferences.setShPrefWindSpeed(WindSpeedEnum.MILE)
+                }
+            }
         }
 
         binding.rgUnit.setOnCheckedChangeListener { _, checkedId ->
@@ -90,12 +116,19 @@ class SettingsFragment : Fragment() {
 
         binding.rgLocation.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.rb_gps -> {
-                    sharedPreferences.setShPrefLocation(LocationEnum.GPS)
+                R.id.rb_map -> {
+                    if (Constants.isInternetConnected(requireContext())){
+                        sharedPreferences.setShPrefLocation(LocationEnum.MAP)
+                        val intent = Intent(activity, MapsActivity::class.java)
+                        startActivityForResult(intent, Constants.REQUEST_CODE_MAPS_ACTIVITY_TO_SETTINGS)
+                    }else{
+                        Constants.showSnackBar(binding.root, Constants.NO_INTERNET_MESSAGE)
+                    }
+
                 }
 
-                R.id.rb_map -> {
-                    sharedPreferences.setShPrefLocation(LocationEnum.MAP)
+                R.id.rb_gps -> {
+                    sharedPreferences.setShPrefLocation(LocationEnum.GPS)
                 }
 
             }
@@ -111,6 +144,16 @@ class SettingsFragment : Fragment() {
             binding.rbArabic.isChecked = false
         }
     }
+
+    private fun initSpeedGroup() {
+        if (sharedPreferences.getShPrefWindSpeed() == WindSpeedEnum.METER.name) {
+            binding.rbMeter.isChecked = true
+            binding.rbMile.isChecked = false
+        } else {
+            binding.rbMeter.isChecked = false
+            binding.rbMile.isChecked = true
+        }
+    }
     private fun initNotificationGroup() {
         if (sharedPreferences.getShPrefNotification() == NotificationEnum.ENABLE.name) {
             binding.rbEnable.isChecked = true
@@ -121,7 +164,7 @@ class SettingsFragment : Fragment() {
         }
     }
     private fun initLocationGroup() {
-        if (sharedPreferences.getShPrefLocation() == LocationEnum.GPS.name) {
+        if (sharedPreferences.getShPrefLocation() == LocationEnum.GPS.name&&Constants.isInternetConnected(requireContext())) {
             binding.rbGps.isChecked = true
             binding.rbMap.isChecked = false
         } else {

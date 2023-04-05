@@ -31,7 +31,7 @@ class HourlyWeatherAdabter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.time.text = Convertor.convertDtToTime(getItem(position).dt)
+        holder.time.text = Convertor.convertDtToTime(holder.time.context,getItem(position).dt)
         holder.degree.addTemperature(getItem(position).temp!!, context =  holder.time.context)
         holder.icon.setImageResource(Convertor.convertIconToDrawableImage(getItem(position).weather[0].icon))
 

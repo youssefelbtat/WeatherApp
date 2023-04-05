@@ -35,10 +35,10 @@ class AlertAdapter(var deleteAlert: (Alerts) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         println("The start is: ${getItem(position).start} The end is : ${getItem(position).end}")
-        holder.tvStartTime.text = Convertor.convertDtToTime(getItem(position).start)
-        holder.tvEndTime.text = Convertor.convertDtToTime(getItem(position).end)
-        holder.tvStartDate.text = Convertor.convertDtToNumberDate(getItem(position).start)
-        holder.tvEndDate.text = Convertor.convertDtToNumberDate(getItem(position).end)
+        holder.tvStartTime.text = Convertor.convertDtToTime(holder.tvStartTime.context,getItem(position).start)
+        holder.tvEndTime.text = Convertor.convertDtToTime(holder.tvEndTime.context,getItem(position).end)
+        holder.tvStartDate.text = Convertor.convertDtToNumberDate(holder.tvStartDate.context,getItem(position).start)
+        holder.tvEndDate.text = Convertor.convertDtToNumberDate(holder.tvEndDate.context,getItem(position).end)
         if (getItem(position).type == AlertType.NOTIFICATION.name) {
             holder.imgIcon.setImageResource(R.drawable.alarm_notif)
         } else {

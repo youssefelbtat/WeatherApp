@@ -331,23 +331,82 @@
 
     </androidx.cardview.widget.CardView>
 
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_save"
-        android:layout_width="132dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_wind"
+        android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="176dp"
-        android:text="@string/save"
-        android:elevation="5dp"
-        android:textStyle="bold"
-        android:background="@color/light_blue"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="20dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/cardview11">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
+            <ImageView
+                android:id="@+id/windspeedseting"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/windspeedseting"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginStart="1dp"
+                android:text="@string/wind_speed"
+                android:textColor="@color/light_blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/windspeedseting"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_windSpeed"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="@+id/cv_wind"
+        app:layout_constraintStart_toStartOf="@+id/cv_wind"
+        app:layout_constraintTop_toBottomOf="@+id/cv_wind">
+
+        <RadioGroup
+            android:id="@+id/rg_windSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:id="@+id/rb_meter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/light_blue"
+                android:text="@string/Meter" />
+
+            <RadioButton
+                android:id="@+id/rb_mile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/light_blue"
+                android:text="@string/mile" />
+
+        </RadioGroup>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -24,6 +24,7 @@ import com.example.weatherapp.helper.Constants.EXTRA_LATITUDE
 import com.example.weatherapp.helper.Constants.EXTRA_LONGITUDE
 import com.example.weatherapp.helper.Constants.NO_INTERNET_MESSAGE
 import com.example.weatherapp.helper.Constants.REQUEST_CODE_MAPS_ACTIVITY_TO_FAV
+import com.example.weatherapp.helper.Constants.getCityNameByLatAndLon
 import com.example.weatherapp.helper.Constants.isInternetConnected
 import com.example.weatherapp.helper.Constants.showDeleteDialog
 import com.example.weatherapp.helper.Constants.showSnackBar
@@ -48,6 +49,7 @@ class FavFragment : Fragment() {
             if (latitude != null && longitude != null) {
                 lifecycleScope.launch {
                     viewModel.getWeather(latitude, longitude).collect { rootWeatherModel ->
+                        rootWeatherModel.timezone=getCityNameByLatAndLon(requireContext(),rootWeatherModel.lat,rootWeatherModel.lon)
                         viewModel.addFavWeather(rootWeatherModel)
                     }
                 }
@@ -121,7 +123,6 @@ class FavFragment : Fragment() {
                 bundle.putSerializable("weather", weatherModel)
                 findNavController().navigate(R.id.action_favFragment_to_homeFragment,bundle)
 
-                //navigate to home fragment to show the weather Model data there
             }
         )
 

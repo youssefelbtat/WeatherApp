@@ -9,6 +9,7 @@ import com.example.weatherapp.data.model.RootWeatherModel
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.data.source.db.LocalSourceInterface
 import com.example.weatherapp.data.source.network.RemoteWeatherSource
+import com.example.weatherapp.helper.LocationEnum
 import com.example.weatherapp.helper.WeatherAlertWorker
 import com.example.weatherapp.helper.WeatherAlertWorker.Companion.ALERT_TYPE_WORKER_DATA
 import com.example.weatherapp.helper.WeatherAlertWorker.Companion.CURRENT_WEATHER_WORKER_DATA
@@ -132,13 +133,17 @@ class Repository private constructor(
         return settingsSharedPreferences.getShPrefLanguage()?:"en"
     }
 
+    override fun getLocationTypeShdPref(): String {
+        return settingsSharedPreferences.getShPrefLocation()?:LocationEnum.GPS.name
+    }
+
     override suspend fun getLocationGPS(): Pair<Double, Double> {
       return locationManager.getLocation()
     }
 
     override suspend fun getLocationMap(): Pair<Double, Double> {
+        return settingsSharedPreferences.getShPrefLatAndLon()?: Pair(-34.0, 151.0)
 
-        TODO("Not yet implemented")
     }
 
 

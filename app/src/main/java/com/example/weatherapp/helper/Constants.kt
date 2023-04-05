@@ -23,6 +23,7 @@ object Constants {
     const val APP_ID = "5105a7173c3805fa7994a304fe55b5ea"
     const val LOCATION_PERMISSION_ID = 21
     const val REQUEST_CODE_MAPS_ACTIVITY_TO_FAV = 100
+    const val REQUEST_CODE_MAPS_ACTIVITY_TO_SETTINGS = 110
     const val EXTRA_LATITUDE = "latitude"
     const val EXTRA_LONGITUDE = "longitude"
     const val NO_INTERNET_MESSAGE = "No internet connection"
@@ -30,7 +31,10 @@ object Constants {
     const val SH_PRF_LANG_KEY = "language"
     const val SH_PRF_NOTIFICATION_KEY = "notification"
     const val SH_PRF_UNIT_KEY = "unit"
-    const val SH_PRF_LOCATION_KEY = "unit"
+    const val SH_PRF_LOCATION_KEY = "location"
+    const val SH_PRF_SPEED_KEY = "speed"
+    const val SH_PRF_LAT_KEY = "lat"
+    const val SH_PRF_LON_KEY = "lon"
 
 
     fun getCityNameByLatAndLon(context: Context, latitude: Double?, longitude: Double?): String? {
@@ -43,6 +47,8 @@ object Constants {
             addressList.firstOrNull()?.adminArea
         else
             addressList?.firstOrNull()?.countryName
+
+        println("The city is : $cityName")
 
         return if (lan == Language.ARABIC.value && !cityName.isNullOrEmpty() && cityName.isEnglish()) {
             addressList?.firstOrNull()?.countryName

@@ -56,9 +56,7 @@ class WeatherAlertWorker(
 
         /*if (currentTime in startTime..endTime) {
             if (alertType == AlertType.NOTIFICATION.name) {
-                if (SettingsSharedPreferences.getInstance(appContext).getShPrefNotification()==NotificationEnum.ENABLE.name){
-                    createNotification(currentWeatherAlerts)
-                }
+
 
             } else {
                 createAlarm(currentWeatherAlerts)
