@@ -59,18 +59,13 @@ class HomeFragment : Fragment() {
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        println("PERMISSION out if")
         if (requestCode == LOCATION_PERMISSION_ID) {
-            println("PERMISSION first if")
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                println("PERMISSION allowed")
                 lifecycleScope.launchWhenCreated {
                     showLoading()
-                    requireActivity().recreate()
                 }
 
             } else {
-                println("PERMISSION does not allowed")
                 showAllowLocationGroup()
                 Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
             }

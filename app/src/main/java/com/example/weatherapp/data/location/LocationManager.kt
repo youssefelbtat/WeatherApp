@@ -17,7 +17,7 @@ class LocationManager(private val context: Context) {
     private val fusedLocationProviderClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "SuspiciousIndentation")
     suspend fun getLocation(): Pair<Double, Double> {
         val resultDeferred = CompletableDeferred<Pair<Double, Double>>()
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
