@@ -20,7 +20,6 @@ import com.google.gson.Gson
 class AlertBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         println("....AlertBroadcastReceiver Start....")
-        // extract the alert data from the intent and show the notification or alarm dialog
         val alertType = intent?.getStringExtra(WeatherAlertWorker.ALERT_TYPE_WORKER_DATA)
         val alertJson = intent?.getStringExtra(WeatherAlertWorker.CURRENT_WEATHER_WORKER_DATA)
         val currentWeatherAlerts = Gson().fromJson(alertJson, Alerts::class.java)

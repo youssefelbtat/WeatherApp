@@ -2,6 +2,7 @@ package com.example.weatherapp.data.repo
 
 import android.content.Context
 import com.example.weatherapp.data.model.*
+import com.example.weatherapp.helper.LocationEnum
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -52,6 +53,10 @@ class FakeRepository : RepositoryInterface {
 
     override fun getLanguageFromShdPref(): String {
         return "en"
+    }
+
+    override fun getLocationTypeShdPref(): String {
+        return LocationEnum.GPS.name
     }
 
     override suspend fun sendNotification(alert: Alerts, context: Context) {

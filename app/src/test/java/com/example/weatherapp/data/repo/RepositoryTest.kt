@@ -12,6 +12,7 @@ import com.example.weatherapp.data.source.FakeRemoteWeatherSource
 import com.example.weatherapp.data.source.SettingsSharedPreferences
 import com.example.weatherapp.helper.Constants
 import com.example.weatherapp.helper.Language
+import com.example.weatherapp.helper.LocationEnum
 import junit.framework.TestCase.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
@@ -126,6 +127,17 @@ class RepositoryTest {
 
         //then
         assertEquals(Language.ENGLISH.value, result)
+
+    }
+
+    @Test
+    fun getLocationTypeFromShdPrefTest_returnsString() {
+
+        //when
+        val result = repository.getLocationTypeShdPref()
+
+        //then
+        assertEquals(LocationEnum.GPS.name, result)
 
     }
 
